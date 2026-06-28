@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+ .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-accent {
+            color: theme('colors.secondary');
+        }
+        .border-accent {
+            border-color: theme('colors.secondary');
+        }
+        .bg-accent {
+            background-color: theme('colors.secondary');
+        }
+        .hover\:bg-accent:hover {
+            background-color: theme('colors.secondary');
+        }
+        .hover\:text-accent:hover {
+            color: theme('colors.secondary');
+        }
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: theme('colors.secondary');
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0.6;
+}
+
+.mouse {
+    width: 24px;
+    height: 40px;
+    border: 2px solid currentColor;
+    border-radius: 40px;
+    position: relative;
+}
+
+.mouse::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 2px;
+    height: 8px;
+    background: currentColor;
+    transform: translateX(-50%);
+    animation: mouse-scroll 1.5s infinite;
+}
+
+@keyframes mouse-scroll {
+    0% { transform: translate(-50%, 0); opacity: 1; }
+    100% { transform: translate(-50%, 15px); opacity: 0; }
+}

@@ -11,17 +11,3 @@ services:
         value: "False"
       - key: SECRET_KEY
         generateValue: true
-
-  # Frontend Static Site
-  - type: web
-    name: portfolio-frontend
-    env: static
-    rootDir: frontend
-    buildCommand: "npm run build"
-    publishPath: "build"
-    envVars:
-      - key: REACT_APP_API_URL
-        fromService:
-          type: web
-          name: portfolio-backend
-          property: url

@@ -88,30 +88,72 @@ Ensure you have **Python 3.x** and **Node.js** installed on your system.
 
 ---
 
-## Production Deployment (Render Blueprint)
+## Production Deployment (Vercel & Render)
 
-This repository includes a root-level `render.yaml` Blueprint file, which enables a **one-click deployment** for both the frontend static site and the backend service.
+This section explains how to deploy the **frontend on Vercel** and the **backend on Render**.
 
-### Deploying via Render Blueprints
+---
 
-1. Commit and push all your latest changes to your GitHub/GitLab repository.
+### 1. Backend Deployment on Render
+
+The backend is a Django application. We can deploy it as a Python Web Service using the root-level `render.yaml` Blueprint or manually.
+
+#### Option A: Deploying via Render Blueprint (Recommended)
+1. Commit and push all your latest changes to your GitHub repository.
 2. Log in to [Render](https://render.com/).
 3. Click on **New +** and select **Blueprint**.
-4. Connect your portfolio repository.
-5. Render will automatically detect the root `render.yaml` file and configure:
-   - **portfolio-backend** (Python web service)
-   - **portfolio-frontend** (Static React site)
-6. Render will automatically set up the networking so that the frontend's environment variable `REACT_APP_API_URL` points directly to your deployed backend URL.
-7. Click **Apply** to deploy.
+4. Connect your portfolio GitHub repository.
+5. Render will automatically detect the root `render.yaml` file and configure the **portfolio-backend** service.
+6. Under Blueprint configuration, you can review the settings and environment variables.
+7. Click **Apply** to deploy the backend.
 
-### Manual Environment Configurations
+#### Option B: Deploying manually as a Web Service
+1. Log in to [Render](https://render.com/).
+2. Click **New +** and select **Web Service**.
+3. Connect your portfolio GitHub repository.
+4. Configure the service:
+   - **Name**: `portfolio-backend`
+   - **Runtime**: `Python 3`
+   - **Root Directory**: `backend`
+   - **Build Command**: `./build.sh`
+   - **Start Command**: `gunicorn backend.wsgi:application`
+5. Click **Advanced** and add the following Environment Variables (see below).
+6. Click **Create Web Service**.
 
-If you deploy the components separately (e.g. Frontend on Vercel/Netlify, Backend on Render/Heroku):
+#### Backend Environment Variables
+Configure these in the Render dashboard under **Environment**:
+- `DEBUG`: `False`
+- `SECRET_KEY`: A long, randomly generated secure string (e.g. `your-production-secret-key`).
+- `ALLOWED_HOSTS`: Your backend's Render domain name (e.g., `portfolio-backend.onrender.com` or comma-separated domains).
+- `DATABASE_URL` *(Recommended)*: Connect a **Render PostgreSQL** database to keep your portfolio data persistent:
+  1. Click **New +** -> **PostgreSQL** on Render to create a database.
+  2. Once created, copy the **Internal Database URL**.
+  3. Add a `DATABASE_URL` environment variable to your `portfolio-backend` service and paste the connection string. Django will automatically run migrations against it during the build process.
 
-- **Backend Env Variables**:
-  - `DEBUG`: Set to `False`.
-  - `SECRET_KEY`: Set to a strong random string.
-  - `ALLOWED_HOSTS`: Set to your backend's domain name (or comma-separated domains).
-  - `DATABASE_URL` *(Optional)*: Set to a PostgreSQL connection URI (e.g., from Render PostgreSQL) to use a persistent SQL database instead of ephemeral SQLite.
-- **Frontend Env Variables**:
-  - `REACT_APP_API_URL`: Set to your deployed backend URL (e.g., `https://portfolio-backend.onrender.com`).
+---
+
+### 2. Frontend Deployment on Vercel
+
+The frontend is a React application. Vercel makes it incredibly easy to build and host static frontend sites.
+
+1. Log in to [Vercel](https://vercel.com/).
+2. Click **Add New...** and select **Project**.
+3. Import your portfolio GitHub repository.
+4. Configure the project settings:
+   - **Framework Preset**: Select **Create React App** (if not auto-detected).
+   - **Root Directory**: Click *Edit* and select **`frontend`**.
+   - **Build and Output Settings**: Keep default settings (`npm run build` and output directory `build`).
+5. Open the **Environment Variables** accordion and add:
+   - **Key**: `REACT_APP_API_URL`
+   - **Value**: The URL of your deployed Render backend (e.g., `https://portfolio-backend.onrender.com`). Make sure **not** to include a trailing slash.
+6. Click **Deploy**. Vercel will build the frontend and serve it at a `.vercel.app` domain.
+
+---
+
+### 3. Connect & Verify
+
+Once both deployments are successful:
+1. Visit your Vercel URL (e.g., `https://your-portfolio.vercel.app`).
+2. Verify that your frontend is fetching portfolio items from the Render backend.
+3. Access your Django Admin portal by going to `<your-backend-render-url>/admin/` to manage your portfolio content (you can run `python manage.py createsuperuser` or manage databases directly).
+

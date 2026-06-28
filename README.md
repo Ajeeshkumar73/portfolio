@@ -12,16 +12,14 @@ portfolio/
 │   ├── backend/            # Django settings, URLs, and WSGI/ASGI configurations
 │   ├── portfolio/          # Django App containing models, views, and serializers
 │   ├── requirements.txt    # Python dependencies
-│   ├── build.sh            # Production build script for Django (collectstatic, migrations)
-│   └── render.yaml         # Backend-specific Render configuration
-├── frontend/               # React Frontend (Create React App)
-│   ├── public/             # Static public assets
-│   ├── src/                # React components, pages, styling
-│   │   ├── components/     # Reusable layout and UI components
-│   │   ├── Pages/          # Main application page views (Home, Profile dashboard)
-│   │   └── config.js       # Dynamic API URL configuration
-│   └── package.json        # Node.js dependencies and scripts
-└── render.yaml             # Root-level Render Blueprint for multi-service deployment
+│   └── build.sh            # Production build script for Django (collectstatic, migrations)
+└── frontend/               # React Frontend (Create React App)
+    ├── public/             # Static public assets
+    ├── src/                # React components, pages, styling
+    │   ├── components/     # Reusable layout and UI components
+    │   ├── Pages/          # Main application page views (Home, Profile dashboard)
+    │   └── config.js       # Dynamic API URL configuration
+    └── package.json        # Node.js dependencies and scripts
 ```
 
 ---
@@ -90,45 +88,50 @@ Ensure you have **Python 3.x** and **Node.js** installed on your system.
 
 ## Production Deployment (Vercel & Render)
 
-This section explains how to deploy the **frontend on Vercel** and the **backend on Render**.
+This section explains how to deploy the **frontend on Vercel** and the **backend on Render** using Render's free tier.
 
 ---
 
-### 1. Backend Deployment on Render
+### 1. Backend Deployment on Render (Free Tier)
 
-The backend is a Django application. We can deploy it as a Python Web Service using the root-level `render.yaml` Blueprint or manually.
+Render offers a free tier for **Web Services**. Since Render Blueprints (`render.yaml`) now require a paid subscription/card registration, you should deploy the backend service **manually** as a Python Web Service.
 
-#### Option A: Deploying via Render Blueprint (Recommended)
-1. Commit and push all your latest changes to your GitHub repository.
-2. Log in to [Render](https://render.com/).
-3. Click on **New +** and select **Blueprint**.
-4. Connect your portfolio GitHub repository.
-5. Render will automatically detect the root `render.yaml` file and configure the **portfolio-backend** service.
-6. Under Blueprint configuration, you can review the settings and environment variables.
-7. Click **Apply** to deploy the backend.
-
-#### Option B: Deploying manually as a Web Service
+#### Step-by-Step Manual Deployment
 1. Log in to [Render](https://render.com/).
 2. Click **New +** and select **Web Service**.
-3. Connect your portfolio GitHub repository.
-4. Configure the service:
+3. Connect your GitHub repository containing the portfolio.
+4. Configure the Web Service settings:
    - **Name**: `portfolio-backend`
    - **Runtime**: `Python 3`
    - **Root Directory**: `backend`
-   - **Build Command**: `./build.sh`
+   - **Build Command**: `bash build.sh` *(Note: using `bash build.sh` prevents file permission/executable errors on Render)*
    - **Start Command**: `gunicorn backend.wsgi:application`
-5. Click **Advanced** and add the following Environment Variables (see below).
+   - **Instance Type**: Select **Free**
+5. Click **Advanced** and add the **Environment Variables** (see below).
 6. Click **Create Web Service**.
 
+#### Setting up a Free Persistent Database
+The Django application is configured to run SQLite by default if no database connection string is provided. However, because Render's Web Service filesystem is ephemeral, SQLite databases will be reset on every restart/deploy.
+Render's own free PostgreSQL database **expires after 90 days**. 
+
+To keep your portfolio data fully persistent and free, we highly recommend using a free, non-expiring PostgreSQL provider:
+- **Neon** ([neon.tech](https://neon.tech/)) - Generous free tier, serverless Postgres.
+- **Supabase** ([supabase.com](https://supabase.com/)) - Generous free tier, manages Postgres and API services.
+
+**To connect a free database:**
+1. Create a free account on [Neon](https://neon.tech/) or [Supabase](https://supabase.com/).
+2. Create a new project/database and copy the database connection URI (it starts with `postgresql://` or `postgres://`).
+3. In your Render Web Service dashboard under the **Environment** tab, add a new variable:
+   - **Key**: `DATABASE_URL`
+   - **Value**: *Your copied database connection URI*
+4. Django will automatically run migrations and setup the tables on your free database during the build.
+
 #### Backend Environment Variables
-Configure these in the Render dashboard under **Environment**:
+Configure these in the Render Web Service dashboard under **Environment**:
 - `DEBUG`: `False`
 - `SECRET_KEY`: A long, randomly generated secure string (e.g. `your-production-secret-key`).
 - `ALLOWED_HOSTS`: Your backend's Render domain name (e.g., `portfolio-backend.onrender.com` or comma-separated domains).
-- `DATABASE_URL` *(Recommended)*: Connect a **Render PostgreSQL** database to keep your portfolio data persistent:
-  1. Click **New +** -> **PostgreSQL** on Render to create a database.
-  2. Once created, copy the **Internal Database URL**.
-  3. Add a `DATABASE_URL` environment variable to your `portfolio-backend` service and paste the connection string. Django will automatically run migrations against it during the build process.
+- `DATABASE_URL`: Your free PostgreSQL connection string.
 
 ---
 

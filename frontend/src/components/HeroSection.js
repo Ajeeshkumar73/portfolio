@@ -1,7 +1,8 @@
-import  Profile_pic  from "../assets/profile_pic.png";
+import Profile_pic from "../assets/profile_pic.png";
 
 function HeroSection({ profile }) {
-  const imageSrc = profile && profile.profilePic ? profile.profilePic : Profile_pic;
+  const imageSrc =
+    profile && profile.profilePic ? profile.profilePic : Profile_pic;
 
   return (
     <>
@@ -24,13 +25,17 @@ function HeroSection({ profile }) {
             functionality, and seamless user experiences. I enjoy transforming
             ideas into impactful web products that solve real-world problems.
           </p>
-          <div className="flex gap-4 mt-8">
-            <button className="bg-primary text-on-primary px-8 py-4 rounded-none hover:bg-accent transition-colors duration-200 font-label-mono text-label-mono uppercase tracking-widest border border-primary">
-              View Projects
-            </button>
-            <button className="bg-transparent text-primary px-8 py-4 rounded-none hover:bg-surface-container transition-colors duration-200 font-label-mono text-label-mono uppercase tracking-widest border border-primary/20">
-              Contact Me
-            </button>
+          <div className="flex flex-wrap gap-4 mt-8">
+            <a href="#projects">
+              <button className="bg-primary text-on-primary px-8 py-4 rounded-none hover:bg-accent transition-colors duration-200 font-label-mono text-label-mono uppercase tracking-widest border border-primary">
+                View Projects
+              </button>
+            </a>
+            <a href="#contact">
+              <button className="bg-transparent text-primary px-8 py-4 rounded-none hover:bg-surface-container transition-colors duration-200 font-label-mono text-label-mono uppercase tracking-widest border border-primary/20">
+                Contact Me
+              </button>
+            </a>
           </div>
         </div>
         <div className="md:col-span-5 flex justify-end mt-12 md:mt-0 relative">

@@ -1,45 +1,77 @@
-
-
 import { useState } from "react";
 
 function Projects({ profile }) {
   const [lightbox, setLightbox] = useState({
     isOpen: false,
     images: [],
-    currentIndex: 0
+    currentIndex: 0,
   });
+  const [expandedMap, setExpandedMap] = useState({});
+
+  const toggleExpand = (idx) => {
+    setExpandedMap((prev) => ({ ...prev, [idx]: !prev[idx] }));
+  };
 
   const hardcodedProjects = [
     {
       title: "NeuroAnalytics Platform",
-      description: "A predictive analytics dashboard leveraging machine learning to forecast market trends. Built with a scalable microservices architecture to process real-time data streams.",
+      description:
+        "A predictive analytics dashboard leveraging machine learning to forecast market trends. Built with a scalable microservices architecture to process real-time data streams.",
       tech: ["NextJS", "Python", "TensorFlow"],
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB0lcbxuklA_GFYTES2yrgwlItR7hoYLbXCFbQfxkm_3KnOvAsuTIQyh8tb6A7SogZV4GtIKiseUBO1iQeD96c0MMMKMWNNvkwMMu_NDETp2-8dWb0FKBnw0a6dIlrGZiYmywZ4QW_zb8uJXBcEHKYg4V0yzkXfG6uLD1VBC8-T6w9DCzV1_Deonx00ZZv7Jjr3iwlTcW7OBA5SDuII9Y4SsxW34CTAUIJIQfB98pdyVpLsxFFZfOPeQs8EFlcaAiqvzhJEqU5ZDRpj",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuB0lcbxuklA_GFYTES2yrgwlItR7hoYLbXCFbQfxkm_3KnOvAsuTIQyh8tb6A7SogZV4GtIKiseUBO1iQeD96c0MMMKMWNNvkwMMu_NDETp2-8dWb0FKBnw0a6dIlrGZiYmywZ4QW_zb8uJXBcEHKYg4V0yzkXfG6uLD1VBC8-T6w9DCzV1_Deonx00ZZv7Jjr3iwlTcW7OBA5SDuII9Y4SsxW34CTAUIJIQfB98pdyVpLsxFFZfOPeQs8EFlcaAiqvzhJEqU5ZDRpj",
       images: [],
-      url: "#"
+      url: "#",
     },
     {
       title: "IntelliAPI Gateway",
-      description: "An intelligent API gateway that dynamically routes requests based on payload sentiment and origin, utilizing lightweight NLP models at the edge.",
+      description:
+        "An intelligent API gateway that dynamically routes requests based on payload sentiment and origin, utilizing lightweight NLP models at the edge.",
       tech: ["NodeJS", "Docker", "PyTorch"],
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBp94_XNvXrJy7dXKE_KIwbX-WNUaFOTAVufC8Y1rFIsEjL_IqPMT9ZSGujDJ-FxT14R_vbh2XLQSEqBEkpTh8ed51h2Wp0P5Qe8RQ0DHeD35LlRGWd4Uhcr9nd-E-eBllCJVZMjwEFBE8nFChSLe8rubFPQDsDruxMZW4cIb95F-TJ22lyLM410WpK8xR2aRmOD7E1RtAxXzAZUF4APd0X28N5zEYLpjeZHf2rYE5ZfIwvGOIMOEA4Z7-3R4xNQdS_gJlUnYJAd4xr",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuBp94_XNvXrJy7dXKE_KIwbX-WNUaFOTAVufC8Y1rFIsEjL_IqPMT9ZSGujDJ-FxT14R_vbh2XLQSEqBEkpTh8ed51h2Wp0P5Qe8RQ0DHeD35LlRGWd4Uhcr9nd-E-eBllCJVZMjwEFBE8nFChSLe8rubFPQDsDruxMZW4cIb95F-TJ22lyLM410WpK8xR2aRmOD7E1RtAxXzAZUF4APd0X28N5zEYLpjeZHf2rYE5ZfIwvGOIMOEA4Z7-3R4xNQdS_gJlUnYJAd4xr",
       images: [],
-      url: "#"
-    }
+      url: "#",
+    },
   ];
 
   const allProjects = [];
-  if (profile && profile.projectTitle) {
+  if (profile && profile.projects && profile.projects.length > 0) {
+    profile.projects.forEach((proj) => {
+      allProjects.push({
+        title: proj.title,
+        description: proj.description,
+        tech: proj.tech
+          ? proj.tech
+              .split(",")
+              .map((t) => t.trim())
+              .filter(Boolean)
+          : [],
+        image: proj.image,
+        images: proj.images || [],
+        url: proj.url || "#",
+      });
+    });
+  } else if (profile && profile.projectTitle) {
+    // Fallback for legacy single project structure
     allProjects.push({
       title: profile.projectTitle,
       description: profile.projectDescription,
-      tech: profile.projectTech ? profile.projectTech.split(",").map(t => t.trim()).filter(Boolean) : [],
+      tech: profile.projectTech
+        ? profile.projectTech
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean)
+        : [],
       image: profile.projectImage,
       images: profile.images || [],
-      url: profile.projectUrl || "#"
+      url: profile.projectUrl || "#",
     });
   }
-  allProjects.push(...hardcodedProjects);
+
+  if (allProjects.length === 0) {
+    allProjects.push(...hardcodedProjects);
+  }
 
   const getProjectImagesList = (project) => {
     const list = [];
@@ -47,7 +79,7 @@ function Projects({ profile }) {
       list.push(project.image);
     }
     if (project.images && project.images.length > 0) {
-      project.images.forEach(imgObj => {
+      project.images.forEach((imgObj) => {
         const url = typeof imgObj === "object" ? imgObj.image : imgObj;
         if (url && !list.includes(url)) {
           list.push(url);
@@ -61,30 +93,79 @@ function Projects({ profile }) {
     setLightbox({
       isOpen: true,
       images: imagesList,
-      currentIndex: index
+      currentIndex: index,
     });
   };
 
   return (
     <>
-      <section class="w-full flex flex-col gap-12 pt-16 border-t border-outline/10" id="projects">
-        <div class="flex justify-between items-end">
-          <h3 class="font-headline-md text-headline-md text-primary">Selected Work</h3>
-          <div class="flex gap-2">
-            <button class="w-10 h-10 border border-outline/20 flex items-center justify-center text-primary hover:bg-surface-container transition-colors">
-              <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
-            </button>
-            <button class="w-10 h-10 border border-outline/20 flex items-center justify-center text-primary hover:bg-surface-container transition-colors">
-              <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
-            </button>
-          </div>
+      <section
+        class="w-full flex flex-col gap-12 pt-16 border-t border-outline/10"
+        id="projects"
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <h3 class="font-headline-md text-headline-md text-primary">
+            Selected Work
+          </h3>
+          <a
+            href="https://github.com/Ajeeshkumar73?tab=repositories"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              fontSize: "11px",
+              fontWeight: "600",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "#000000",
+              background: "rgba(0,0,0,0.06)",
+              border: "1px solid rgba(0,0,0,0.18)",
+              borderRadius: "999px",
+              padding: "5px 14px",
+              textDecoration: "none",
+              transition: "background 0.2s, border-color 0.2s, transform 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(0,0,0,0.12)";
+              e.currentTarget.style.borderColor = "rgba(0,0,0,0.4)";
+              e.currentTarget.style.transform = "translateY(-1px)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(0,0,0,0.06)";
+              e.currentTarget.style.borderColor = "rgba(0,0,0,0.18)";
+              e.currentTarget.style.transform = "translateY(0)";
+            }}
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12" />
+            </svg>
+            Explore More
+            <span style={{ fontSize: "13px", marginLeft: "1px" }}>↗</span>
+          </a>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
           {allProjects.map((project, idx) => {
             const imagesList = getProjectImagesList(project);
             return (
-              <div key={idx} class="border border-outline/10 bg-surface flex flex-col group cursor-pointer hover:border-primary/30 transition-colors">
-                <div 
+              <div
+                key={idx}
+                class="border border-outline/10 bg-surface flex flex-col group cursor-pointer hover:border-primary/30 transition-colors"
+              >
+                <div
                   class="w-full aspect-video bg-surface-container-high relative overflow-hidden flex items-center justify-center"
                   onClick={() => {
                     if (imagesList.length > 0) {
@@ -99,7 +180,9 @@ function Projects({ profile }) {
                       src={project.image}
                     />
                   ) : (
-                    <div className="text-on-surface-variant font-body-md">No project image uploaded</div>
+                    <div className="text-on-surface-variant font-body-md">
+                      No project image uploaded
+                    </div>
                   )}
                 </div>
 
@@ -107,34 +190,100 @@ function Projects({ profile }) {
                 {imagesList.length > 1 && (
                   <div className="flex gap-2 px-8 pt-4 overflow-x-auto">
                     {imagesList.map((imgUrl, thumbIdx) => (
-                      <div 
-                        key={thumbIdx} 
+                      <div
+                        key={thumbIdx}
                         className="w-20 aspect-video rounded border border-outline/15 overflow-hidden cursor-pointer hover:border-primary transition"
                         onClick={(e) => {
                           e.stopPropagation();
                           openLightbox(imagesList, thumbIdx);
                         }}
                       >
-                        <img src={imgUrl} alt={`Thumbnail ${thumbIdx + 1}`} className="w-full h-full object-cover" />
+                        <img
+                          src={imgUrl}
+                          alt={`Thumbnail ${thumbIdx + 1}`}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                     ))}
                   </div>
                 )}
 
                 <div class="p-8 flex flex-col gap-4">
-                  <h4 class="font-headline-md text-headline-md text-primary">{project.title}</h4>
-                  <p class="font-body-md text-body-md text-on-surface-variant">
+                  {/* Title */}
+                  <h4 class="font-headline-md text-headline-md text-primary">
+                    {project.title}
+                  </h4>
+
+                  {/* Description preview (always visible, 2 lines clamped) */}
+                  <p
+                    class="font-body-md text-body-md text-on-surface-variant"
+                    style={{
+                      display: "-webkit-box",
+                      WebkitLineClamp: expandedMap[idx] ? "unset" : 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: expandedMap[idx] ? "visible" : "hidden",
+                      transition: "all 0.3s ease",
+                    }}
+                  >
                     {project.description}
                   </p>
-                  <div class="flex flex-wrap gap-2 mt-4">
+
+                  {/* Expand / Collapse arrow — below description */}
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleExpand(idx);
+                      }}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        background: "none",
+                        border: "none",
+                        padding: 0,
+                        cursor: "pointer",
+                        fontSize: "11px",
+                        fontWeight: "600",
+                        letterSpacing: "0.06em",
+                        color: "#444",
+                      }}
+                      aria-label={expandedMap[idx] ? "Collapse" : "Expand"}
+                    >
+                      {expandedMap[idx] ? "Less" : "More"}
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        style={{
+                          transition: "transform 0.3s",
+                          transform: expandedMap[idx]
+                            ? "rotate(180deg)"
+                            : "rotate(0deg)",
+                        }}
+                      >
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div class="flex flex-wrap gap-2">
                     {project.tech.map((t, tIdx) => (
-                      <span key={tIdx} class="bg-surface-container px-3 py-1 font-label-mono text-label-mono text-on-surface-variant">
+                      <span
+                        key={tIdx}
+                        class="bg-surface-container px-3 py-1 font-label-mono text-label-mono text-on-surface-variant"
+                      >
                         #{t}
                       </span>
                     ))}
                   </div>
                   {project.url && project.url !== "#" && (
-                    <div className="mt-4">
+                    <div className="mt-2">
                       <a
                         href={project.url}
                         target="_blank"
@@ -155,58 +304,70 @@ function Projects({ profile }) {
 
       {/* Lightbox Modal */}
       {lightbox.isOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-50 bg-black/95 flex flex-col justify-center items-center p-4 transition-all duration-300"
           onClick={() => setLightbox({ ...lightbox, isOpen: false })}
         >
           {/* Close button */}
-          <button 
+          <button
             className="absolute top-6 right-6 text-white/80 hover:text-white p-2 bg-white/10 hover:bg-white/20 rounded-full transition"
             onClick={(e) => {
               e.stopPropagation();
               setLightbox({ ...lightbox, isOpen: false });
             }}
           >
-            <span className="material-symbols-outlined block text-3xl">close</span>
+            <span className="material-symbols-outlined block text-3xl">
+              close
+            </span>
           </button>
 
           {/* Main Image Container */}
-          <div className="relative max-w-5xl max-h-[80vh] w-full flex justify-center items-center" onClick={(e) => e.stopPropagation()}>
-            <img 
-              src={lightbox.images[lightbox.currentIndex]} 
-              alt="Expanded view" 
+          <div
+            className="relative max-w-5xl max-h-[80vh] w-full flex justify-center items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={lightbox.images[lightbox.currentIndex]}
+              alt="Expanded view"
               className="max-w-full max-h-[80vh] object-contain border border-white/10 shadow-2xl rounded-lg"
             />
 
             {/* Left Nav Button */}
             {lightbox.images.length > 1 && (
-              <button 
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white p-3 bg-white/10 hover:bg-white/20 rounded-full transition"
+              <button
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-black/40 hover:text-white p-3 bg-white/10 hover:bg-white/20 rounded-full transition"
                 onClick={(e) => {
                   e.stopPropagation();
                   setLightbox({
                     ...lightbox,
-                    currentIndex: (lightbox.currentIndex - 1 + lightbox.images.length) % lightbox.images.length
+                    currentIndex:
+                      (lightbox.currentIndex - 1 + lightbox.images.length) %
+                      lightbox.images.length,
                   });
                 }}
               >
-                <span className="material-symbols-outlined block text-3xl">arrow_back</span>
+                <span className="material-symbols-outlined block text-3xl">
+                  arrow_back
+                </span>
               </button>
             )}
 
             {/* Right Nav Button */}
             {lightbox.images.length > 1 && (
-              <button 
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white p-3 bg-white/10 hover:bg-white/20 rounded-full transition"
+              <button
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-black/40 hover:text-white p-3 bg-white/10 hover:bg-white/20 rounded-full transition"
                 onClick={(e) => {
                   e.stopPropagation();
                   setLightbox({
                     ...lightbox,
-                    currentIndex: (lightbox.currentIndex + 1) % lightbox.images.length
+                    currentIndex:
+                      (lightbox.currentIndex + 1) % lightbox.images.length,
                   });
                 }}
               >
-                <span className="material-symbols-outlined block text-3xl">arrow_forward</span>
+                <span className="material-symbols-outlined block text-3xl">
+                  arrow_forward
+                </span>
               </button>
             )}
           </div>
@@ -221,4 +382,4 @@ function Projects({ profile }) {
   );
 }
 
-export default Projects
+export default Projects;

@@ -1,4 +1,4 @@
-function About() {
+function About({ profile }) {
   return (
     <>
       <section
@@ -25,6 +25,7 @@ function About() {
             combining software engineering principles with data-driven
             technologies to create innovative and impactful solutions.
           </p>
+
         </div>
         <div className="md:col-span-1"></div>
         <div className="md:col-span-5 flex flex-col gap-6">

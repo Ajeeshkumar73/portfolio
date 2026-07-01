@@ -1,128 +1,237 @@
 function Skills({ profile }) {
-  const getSkillsForCategory = (category, defaultSkills) => {
-    if (profile && profile.skillCategory === category && profile.skills) {
-      return profile.skills.split(",").map(s => s.trim()).filter(Boolean);
+  // Helper to map skill names to skillicons slugs
+  const skillToSlug = (skillName) => {
+    const name = skillName.trim().toLowerCase();
+    const mapping = {
+      javascript: "js",
+      typescript: "ts",
+      python: "py",
+      "c++": "cpp",
+      "c#": "cs",
+      react: "react",
+      "react.js": "react",
+      reactjs: "react",
+      node: "nodejs",
+      "node.js": "nodejs",
+      nodejs: "nodejs",
+      "next.js": "nextjs",
+      nextjs: "nextjs",
+      "vue.js": "vue",
+      vuejs: "vue",
+      vue: "vue",
+      angular: "angular",
+      angularjs: "angular",
+      tailwind: "tailwind",
+      tailwindcss: "tailwind",
+      "tailwind css": "tailwind",
+      bootstrap: "bootstrap",
+      sass: "sass",
+      scss: "sass",
+      html: "html",
+      html5: "html",
+      css: "css",
+      css3: "css",
+      django: "django",
+      flask: "flask",
+      fastapi: "fastapi",
+      "spring boot": "spring",
+      springboot: "spring",
+      spring: "spring",
+      laravel: "laravel",
+      express: "express",
+      "express.js": "express",
+      expressjs: "express",
+      mongodb: "mongodb",
+      mongo: "mongodb",
+      postgresql: "postgres",
+      postgres: "postgres",
+      mysql: "mysql",
+      sqlite: "sqlite",
+      redis: "redis",
+      graphql: "graphql",
+      apollo: "apollo",
+      docker: "docker",
+      kubernetes: "kubernetes",
+      k8s: "kubernetes",
+      aws: "aws",
+      gcp: "gcp",
+      azure: "azure",
+      firebase: "firebase",
+      git: "git",
+      github: "github",
+      gitlab: "gitlab",
+      bitbucket: "bitbucket",
+      figma: "figma",
+      postman: "postman",
+      vscode: "vscode",
+      "vs code": "vscode",
+      npm: "npm",
+      yarn: "yarn",
+      pnpm: "pnpm",
+      vite: "vite",
+      webpack: "webpack",
+      babel: "babel",
+      tensorflow: "tensorflow",
+      pytorch: "pytorch",
+      "scikit-learn": "sklearn",
+      scikitlearn: "sklearn",
+      sklearn: "sklearn",
+      opencv: "opencv",
+      pandas: "pandas",
+      numpy: "numpy",
+      c: "c",
+      java: "java",
+      kotlin: "kotlin",
+      swift: "swift",
+      dart: "dart",
+      flutter: "flutter",
+      linux: "linux",
+      ubuntu: "ubuntu",
+      windows: "windows",
+      apple: "apple",
+      android: "android",
+      nginx: "nginx",
+      heroku: "heroku",
+      vercel: "vercel",
+      netlify: "netlify",
+      jenkins: "jenkins",
+      "github actions": "githubactions",
+      githubactions: "githubactions",
+      jupyter: "jupyter",
+      "jupyter notebook": "jupyter",
+      jupyternotebook: "jupyter",
+      excel: "excel",
+      "microsoft excel": "excel",
+      "ms excel": "excel",
+    };
+
+    if (mapping[name]) return mapping[name];
+    return name.replace(/[^a-z0-9]/g, "");
+  };
+
+  const getSkillsForCategory = (fieldValue, defaultSkills) => {
+    if (fieldValue) {
+      return fieldValue
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
     }
     return defaultSkills;
   };
 
-  const frontendSkills = getSkillsForCategory("Frontend", [
-    "TensorFlow / PyTorch",
-    "Scikit-learn",
-    "LLM Integration",
-    "LangChain"
+  const frontendSkills = getSkillsForCategory(profile?.frontendSkills, [
+    "React",
+    "Tailwind",
+    "Bootstrap",
+    "HTML5",
+    "CSS3",
+    "JavaScript",
   ]);
 
-  const backendSkills = getSkillsForCategory("Backend", [
-    "TensorFlow / PyTorch",
-    "Scikit-learn",
-    "LLM Integration",
-    "LangChain"
+  const backendSkills = getSkillsForCategory(profile?.backendSkills, [
+    "Python",
+    "PHP",
+    "C",
+    "JavaScript",
+    "Django",
+    "Flask",
   ]);
 
-  const toolsSkills = getSkillsForCategory("Tools", [
-    "TensorFlow / PyTorch",
-    "Scikit-learn",
-    "LLM Integration",
-    "LangChain"
+  const databaseSkills = getSkillsForCategory(profile?.databaseSkills, [
+    "MySQL",
+    "MongoDB",
+    "SQLite",
   ]);
 
-  const aiMlSkills = getSkillsForCategory("AI & ML", [
-    "TensorFlow / PyTorch",
-    "Scikit-learn",
-    "LLM Integration",
-    "LangChain"
+  const toolsSkills = getSkillsForCategory(profile?.toolsSkills, [
+    "Git",
+    "GitHub",
+    "VS Code",
+    "Jupyter Notebook",
+    "Excel",
   ]);
+
+  const otherSkillsList = profile?.otherSkills
+    ? profile.otherSkills
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : [
+        "REST APIs",
+        "MVC Architecture",
+        "Data Structures",
+        "Algorithms",
+        "OOP",
+        "DBMS",
+      ];
+
+  const renderSkillIconCard = (title, skillsList) => {
+    return (
+      <div className="bg-white shadow-md border border-outline/10 p-8 flex flex-col gap-6 hover:border-primary transition-all duration-300 rounded-lg">
+        <h4 className="font-body-lg text-body-lg font-bold tracking-wider uppercase text-black flex items-center gap-2">
+          {title}
+        </h4>
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {skillsList.map((skill, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-surface-container transition-colors duration-200 w-full"
+            >
+              <img
+                src={`https://skillicons.dev/icons?i=${skillToSlug(skill)}`}
+                alt={skill}
+                className="w-12 h-12 object-contain hover:scale-110 transition-transform duration-200"
+              />
+              <span className="text-[11px] sm:text-xs font-semibold text-on-surface-variant text-center max-w-full leading-tight">
+                {skill}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <>
       <section
-        class="w-full flex flex-col gap-12 pt-16 border-t border-outline/10"
+        className="w-full flex flex-col gap-12 pt-16 border-t border-outline/10"
         id="skills"
       >
-        <h3 class="font-headline-md text-headline-md text-primary">Skills</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
-          {/**Frontend */}
-          <div class="border border-outline/10 p-8 flex flex-col gap-6 bg-tertiary-container text-on-tertiary hover:border-primary transition-colors duration-300">
-            <div class="flex items-center gap-3">
-              <span
-                class="material-symbols-outlined text-on-tertiary text-2xl"
-                data-icon="web"
-              >
-                web
-              </span>
-              <h4 class="font-body-lg text-body-lg font-semibold">Frontend</h4>
-            </div>
-            <ul class="flex flex-col gap-3 font-body-md text-body-md text-surface-variant">
-              {frontendSkills.map((skill, index) => (
-                <li key={index} class="flex items-center gap-2">
-                  <span class="w-1 h-1 bg-on-tertiary rounded-full"></span>{" "}
-                  {skill}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/**Backend */}
-          <div class="border border-outline/10 p-8 flex flex-col gap-6 bg-tertiary-container text-on-tertiary hover:border-primary transition-colors duration-300">
-            <div class="flex items-center gap-3">
-              <span
-                class="material-symbols-outlined text-on-tertiary text-2xl"
-                data-icon="dns"
-              >
-                dns
-              </span>
-              <h4 class="font-body-lg text-body-lg font-semibold">Backend</h4>
-            </div>
-            <ul class="flex flex-col gap-3 font-body-md text-body-md text-surface-variant">
-              {backendSkills.map((skill, index) => (
-                <li key={index} class="flex items-center gap-2">
-                  <span class="w-1 h-1 bg-on-tertiary rounded-full"></span>{" "}
-                  {skill}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/**Tools*/}
-          <div class="border border-outline/10 p-8 flex flex-col gap-6 bg-tertiary-container text-on-tertiary hover:border-primary transition-colors duration-300">
-            <div class="flex items-center gap-3">
-              <span
-                class="material-symbols-outlined text-on-tertiary text-2xl"
-                data-icon="build"
-              >
-                build
-              </span>
-              <h4 class="font-body-lg text-body-lg font-semibold">Tools</h4>
-            </div>
-            <ul class="flex flex-col gap-3 font-body-md text-body-md text-surface-variant">
-              {toolsSkills.map((skill, index) => (
-                <li key={index} class="flex items-center gap-2">
-                  <span class="w-1 h-1 bg-on-tertiary rounded-full"></span>{" "}
-                  {skill}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/**AI & ML */}
-          <div class="border border-outline/10 p-8 flex flex-col gap-6 bg-tertiary-container text-on-tertiary hover:border-primary transition-colors duration-300">
-            <div class="flex items-center gap-3">
-              <span
-                class="material-symbols-outlined text-on-tertiary text-2xl"
-                data-icon="smart_toy"
-              >
-                smart_toy
-              </span>
-              <h4 class="font-body-lg text-body-lg font-semibold">AI & ML</h4>
-            </div>
-            <ul class="flex flex-col gap-3 font-body-md text-body-md text-surface-variant">
-              {aiMlSkills.map((skill, index) => (
-                <li key={index} class="flex items-center gap-2">
-                  <span class="w-1 h-1 bg-on-tertiary rounded-full"></span>{" "}
-                  {skill}
-                </li>
-              ))}
-            </ul>
-          </div>
+        <h3 className="font-headline-md text-headline-md text-primary">
+          Skills
+        </h3>
+
+        {/* Modern 2x2 Grid representing the Table layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+          {renderSkillIconCard("Frontend & Libraries", frontendSkills)}
+          {renderSkillIconCard("Languages & Backend", backendSkills)}
+          {renderSkillIconCard("Databases", databaseSkills)}
+          {renderSkillIconCard("Tools & Platforms", toolsSkills)}
         </div>
+
+        {/* Bottom Section: Other Skills */}
+        {otherSkillsList.length > 0 && (
+          <div className="bg-white shadow-md border border-outline/10 p-8 flex flex-col items-center justify-center text-center gap-6 hover:border-primary transition-all duration-300 rounded-lg w-full">
+            <h4 className="font-body-lg text-body-lg font-bold tracking-wider uppercase text-black">
+              Other Skills
+            </h4>
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 max-w-4xl text-body-md text-on-surface-variant font-medium">
+              {otherSkillsList.map((skill, index) => (
+                <span key={index} className="flex items-center">
+                  <code className="bg-surface-container px-3 py-1 rounded text-primary border border-outline/5 text-sm font-mono">
+                    {skill}
+                  </code>
+                  {index < otherSkillsList.length - 1 && (
+                    <span className="text-secondary ml-3 text-lg font-bold">
+                      •
+                    </span>
+                  )}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
     </>
   );

@@ -154,7 +154,7 @@ EMAIL_RECIPIENT = config("EMAIL_RECIPIENT", default="ajeeshkumarbs168@gmail.com"
 ALLOWED_HOSTS = [
     '.onrender.com',
     'localhost',
-    '127.0.0.1'
+    '127.0.0.1',
 ]
 
 if os.environ.get('ALLOWED_HOSTS'):

@@ -1,0 +1,30 @@
+# Environment variables
+backend/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Django
+*.sqlite3
+media/
+staticfiles/
+
+# Node / Frontend
+node_modules/
+frontend/.env
+frontend/dist/
+frontend/build/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -4,6 +4,8 @@ function HeroSection({ profile }) {
   const imageSrc =
     profile && profile.profilePic ? profile.profilePic : Profile_pic;
 
+  const resumeUrl = profile && profile.resume ? profile.resume : null;
+
   return (
     <>
       <section className="w-full grid grid-cols-1 md:grid-cols-12 gap-gutter items-center pt-6 pb-16 relative">
@@ -36,6 +38,24 @@ function HeroSection({ profile }) {
                 Contact Me
               </button>
             </a>
+            {resumeUrl && (
+              <a
+                href={resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: "inline-flex" }}
+              >
+                <button
+                  className="bg-transparent text-primary px-8 py-4 rounded-none hover:bg-surface-container transition-colors duration-200 font-label-mono text-label-mono uppercase tracking-widest border border-primary/20"
+                  style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: "18px", lineHeight: 1 }}>
+                    description
+                  </span>
+                  View Resume
+                </button>
+              </a>
+            )}
           </div>
         </div>
         <div className="md:col-span-5 flex justify-end mt-12 md:mt-0 relative">

@@ -1,6 +1,4 @@
-function Navbar({ profile }) {
-  const resumeUrl = profile && profile.resume ? profile.resume : null;
-
+function Navbar() {
   return (
     <>
       <nav className="fixed top-0 left-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-md border-b border-outline/10 dark:border-outline-variant/10 transition-all duration-300 ease-in-out">
@@ -39,19 +37,6 @@ function Navbar({ profile }) {
             >
               Contact
             </a>
-            {resumeUrl && (
-              <a
-                href={resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-on-surface-variant dark:text-on-surface-variant hover:text-black transition-colors font-body-md text-body-md flex items-center gap-1"
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>
-                  description
-                </span>
-                Resume
-              </a>
-            )}
           </div>
           <a href="#contact">
             <button

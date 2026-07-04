@@ -6,6 +6,10 @@ from .models import Profile, Project, ProjectImage, Certificate
 from .serializers import ProfileSerializer
 from django.core.mail import send_mail
 from django.conf import settings
+from decouple import config 
+
+ADMIN_USERNAME = config("USER_NAME", default="Username")
+ADMIN_PASSWORD = config("PASSWORD", default="Password")
 
 @api_view(['POST'])
 def login_view(request):
@@ -13,7 +17,7 @@ def login_view(request):
     password = request.data.get('password')
 
 
-    if (username=="Ajeesh" and password =="112233") :
+    if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
         return Response({
             "success": True
         })
@@ -22,6 +26,7 @@ def login_view(request):
         "success": False,
         "message": "Invalid credentials"
     }, status=401)
+
 
 @api_view(['GET', 'POST'])
 @parser_classes([MultiPartParser, FormParser, JSONParser])

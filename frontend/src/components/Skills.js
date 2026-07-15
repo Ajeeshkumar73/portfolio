@@ -163,6 +163,12 @@ function Skills({ profile }) {
         .map((s) => s.trim())
         .filter(Boolean)
     : [
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Deep Learning",
+        "Scikit-Learn",
+        "LLM Integration",
+        "PyTorch TabNet",
         "REST APIs",
         "MVC Architecture",
         "Data Structures",
@@ -177,7 +183,7 @@ function Skills({ profile }) {
         "NLP",
         "Responsive Web Design",
         "Authentication & Authorization",
-        "Single Page Application",
+        "SPA",
         "Software Testing & Debugging",
         "Random Forest",
         "API Integration",
@@ -258,13 +264,13 @@ function Skills({ profile }) {
         {otherSkillsList.length > 0 && (
           <div className="bg-white shadow-md border border-outline/10 p-8 flex flex-col items-center justify-center text-center gap-6 hover:border-primary transition-all duration-300 rounded-lg w-full">
             <h4 className="font-body-lg text-body-lg font-bold tracking-wider uppercase text-black">
-              Other Skills
+              Other Skills & Concepts
             </h4>
             <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 max-w-4xl text-body-md text-on-surface-variant font-medium">
               {otherSkillsList.map((skill, index) => (
                 <span key={index} className="flex items-center">
                   <code className="bg-surface-container px-3 py-1 rounded text-primary border border-outline/5 text-sm font-mono">
-                    {skill}
+                    {}
                   </code>
                   {index < otherSkillsList.length - 1 && (
                     <span className="text-secondary ml-3 text-lg font-bold">

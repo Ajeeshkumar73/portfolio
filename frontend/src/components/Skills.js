@@ -157,37 +157,32 @@ function Skills({ profile }) {
     "npm",
   ]);
 
-  const otherSkillsList = profile?.otherSkills
-    ? profile.otherSkills
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean)
-    : [
-        "Artificial Intelligence",
-        "Machine Learning",
-        "Deep Learning",
-        "Scikit-Learn",
-        "LLM Integration",
-        "PyTorch TabNet",
-        "REST APIs",
-        "MVC Architecture",
-        "Data Structures",
-        "Algorithms",
-        "OOP",
-        "RDBMS",
-        "Django REST Framework",
-        "Jinja2",
-        "Flask-SocketIO",
-        "Full Stack Development",
-        "SDLC",
-        "NLP",
-        "Responsive Web Design",
-        "Authentication & Authorization",
-        "SPA",
-        "Software Testing & Debugging",
-        "Random Forest",
-        "API Integration",
-      ];
+  const otherSkillsList = [
+    "Artificial Intelligence",
+    "Machine Learning",
+    "Deep Learning",
+    "Scikit-Learn",
+    "LLM Integration",
+    "PyTorch TabNet",
+    "REST APIs",
+    "MVC Architecture",
+    "Data Structures",
+    "Algorithms",
+    "OOP",
+    "RDBMS",
+    "Django REST Framework",
+    "Jinja2",
+    "Flask-SocketIO",
+    "Full Stack Development",
+    "SDLC",
+    "NLP",
+    "Responsive Web Design",
+    "Authentication & Authorization",
+    "SPA",
+    "Software Testing & Debugging",
+    "Random Forest",
+    "API Integration",
+  ];
 
   const shouldHideIcon = (skillName) => {
     const name = skillName.trim().toLowerCase();
@@ -270,7 +265,7 @@ function Skills({ profile }) {
               {otherSkillsList.map((skill, index) => (
                 <span key={index} className="flex items-center">
                   <code className="bg-surface-container px-3 py-1 rounded text-primary border border-outline/5 text-sm font-mono">
-                    {}
+                    {skill}
                   </code>
                   {index < otherSkillsList.length - 1 && (
                     <span className="text-secondary ml-3 text-lg font-bold">

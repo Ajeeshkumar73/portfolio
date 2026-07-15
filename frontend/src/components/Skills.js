@@ -168,7 +168,19 @@ function Skills({ profile }) {
         "Data Structures",
         "Algorithms",
         "OOP",
-        "DBMS",
+        "RDBMS",
+        "Django REST Framework",
+        "Jinja2",
+        "Flask-SocketIO",
+        "Full Stack Development",
+        "SDLC",
+        "NLP",
+        "Responsive Web Design",
+        "Authentication & Authorization",
+        "Single Page Application",
+        "Software Testing & Debugging",
+        "Random Forest",
+        "API Integration",
       ];
 
   const shouldHideIcon = (skillName) => {
@@ -181,7 +193,7 @@ function Skills({ profile }) {
       "jupyternotebook",
       "excel",
       "microsoft excel",
-      "ms excel"
+      "ms excel",
     ];
     return hideList.includes(name);
   };

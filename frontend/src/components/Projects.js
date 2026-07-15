@@ -1,4 +1,10 @@
 import { useState } from "react";
+import {
+  Farmie,
+  ScoreTacker,
+  WellnessWave,
+  LearnLoop,
+} from "../assets/ProjectImage";
 
 function Projects({ profile }) {
   const [lightbox, setLightbox] = useState({
@@ -10,6 +16,23 @@ function Projects({ profile }) {
 
   const toggleExpand = (idx) => {
     setExpandedMap((prev) => ({ ...prev, [idx]: !prev[idx] }));
+  };
+
+  const projectImages = {
+    learnloop: LearnLoop,
+    "wellness-wave": WellnessWave,
+    farmie: Farmie,
+    "score-tracker": ScoreTacker,
+  };
+
+  const getProjectImage = (title) => {
+    if (!title) return null;
+    const t = title.toLowerCase();
+    if (t.includes("learnloop")) return LearnLoop;
+    if (t.includes("wellness wave") || t.includes("wellness-wave")) return WellnessWave;
+    if (t.includes("score tracker") || t.includes("score-tracker") || t.includes("scoretacker") || t.includes("score tacker")) return ScoreTacker;
+    if (t.includes("farmie")) return Farmie;
+    return null;
   };
 
   const hardcodedProjects = [];
@@ -53,17 +76,13 @@ function Projects({ profile }) {
   }
 
   const getProjectImagesList = (project) => {
+    const localImg = getProjectImage(project.title);
+    if (localImg) {
+      return [localImg];
+    }
     const list = [];
     if (project.image) {
       list.push(project.image);
-    }
-    if (project.images && project.images.length > 0) {
-      project.images.forEach((imgObj) => {
-        const url = typeof imgObj === "object" ? imgObj.image : imgObj;
-        if (url && !list.includes(url)) {
-          list.push(url);
-        }
-      });
     }
     return list;
   };
@@ -152,11 +171,11 @@ function Projects({ profile }) {
                     }
                   }}
                 >
-                  {project.image ? (
+                  {getProjectImage(project.title) || project.image ? (
                     <img
                       alt={project.title}
-                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      src={project.image}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      src={getProjectImage(project.title) || project.image}
                     />
                   ) : (
                     <div className="text-on-surface-variant font-body-md">
@@ -164,28 +183,6 @@ function Projects({ profile }) {
                     </div>
                   )}
                 </div>
-
-                {/* Additional Images / Thumbnails */}
-                {imagesList.length > 1 && (
-                  <div className="flex gap-2 px-8 pt-4 overflow-x-auto">
-                    {imagesList.map((imgUrl, thumbIdx) => (
-                      <div
-                        key={thumbIdx}
-                        className="w-20 aspect-video rounded border border-outline/15 overflow-hidden cursor-pointer hover:border-primary transition"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openLightbox(imagesList, thumbIdx);
-                        }}
-                      >
-                        <img
-                          src={imgUrl}
-                          alt={`Thumbnail ${thumbIdx + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
 
                 <div class="p-8 flex flex-col gap-4">
                   {/* Title */}

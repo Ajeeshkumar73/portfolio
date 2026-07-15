@@ -18,20 +18,13 @@ function Projects({ profile }) {
     setExpandedMap((prev) => ({ ...prev, [idx]: !prev[idx] }));
   };
 
-  const projectImages = {
-    learnloop: LearnLoop,
-    "wellness-wave": WellnessWave,
-    farmie: Farmie,
-    "score-tracker": ScoreTacker,
-  };
-
   const getProjectImage = (title) => {
     if (!title) return null;
     const t = title.toLowerCase();
-    if (t.includes("learnloop")) return projectImages.learnloop;
-    if (t.includes("wellness wave") || t.includes("wellness-wave")) return projectImages["wellness-wave"];
-    if (t.includes("score tracker") || t.includes("score-tracker") || t.includes("scoretacker") || t.includes("score tacker")) return projectImages["score-tracker"];
-    if (t.includes("farmie")) return projectImages.farmie;
+    if (t.includes("learnloop")) return LearnLoop;
+    if (t.includes("wellness wave") || t.includes("wellness-wave")) return WellnessWave;
+    if (t.includes("score tracker") || t.includes("score-tracker") || t.includes("scoretacker") || t.includes("score tacker")) return ScoreTacker;
+    if (t.includes("farmie")) return Farmie;
     return null;
   };
 

@@ -1,21 +1,5 @@
 function Certificate({ profile }) {
-  const hardcodedCertificates = [
-    {
-      title: "Cloud Architecture",
-      name: "AWS Certified Solutions Architect",
-      from: "Amazon Web Services",
-    },
-    {
-      title: "Machine Learning",
-      name: "Google Professional Machine Learning Engineer",
-      from: "Google Cloud",
-    },
-    {
-      title: "Deep Learning",
-      name: "DeepLearning.AI TensorFlow Developer",
-      from: "Coursera / DeepLearning.AI",
-    },
-  ];
+  const hardcodedCertificates = [];
 
   const allCertificates = [];
   if (profile && profile.certificates && profile.certificates.length > 0) {

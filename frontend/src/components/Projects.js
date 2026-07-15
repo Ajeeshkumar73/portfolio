@@ -12,28 +12,7 @@ function Projects({ profile }) {
     setExpandedMap((prev) => ({ ...prev, [idx]: !prev[idx] }));
   };
 
-  const hardcodedProjects = [
-    {
-      title: "NeuroAnalytics Platform",
-      description:
-        "A predictive analytics dashboard leveraging machine learning to forecast market trends. Built with a scalable microservices architecture to process real-time data streams.",
-      tech: ["NextJS", "Python", "TensorFlow"],
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuB0lcbxuklA_GFYTES2yrgwlItR7hoYLbXCFbQfxkm_3KnOvAsuTIQyh8tb6A7SogZV4GtIKiseUBO1iQeD96c0MMMKMWNNvkwMMu_NDETp2-8dWb0FKBnw0a6dIlrGZiYmywZ4QW_zb8uJXBcEHKYg4V0yzkXfG6uLD1VBC8-T6w9DCzV1_Deonx00ZZv7Jjr3iwlTcW7OBA5SDuII9Y4SsxW34CTAUIJIQfB98pdyVpLsxFFZfOPeQs8EFlcaAiqvzhJEqU5ZDRpj",
-      images: [],
-      url: "#",
-    },
-    {
-      title: "IntelliAPI Gateway",
-      description:
-        "An intelligent API gateway that dynamically routes requests based on payload sentiment and origin, utilizing lightweight NLP models at the edge.",
-      tech: ["NodeJS", "Docker", "PyTorch"],
-      image:
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuBp94_XNvXrJy7dXKE_KIwbX-WNUaFOTAVufC8Y1rFIsEjL_IqPMT9ZSGujDJ-FxT14R_vbh2XLQSEqBEkpTh8ed51h2Wp0P5Qe8RQ0DHeD35LlRGWd4Uhcr9nd-E-eBllCJVZMjwEFBE8nFChSLe8rubFPQDsDruxMZW4cIb95F-TJ22lyLM410WpK8xR2aRmOD7E1RtAxXzAZUF4APd0X28N5zEYLpjeZHf2rYE5ZfIwvGOIMOEA4Z7-3R4xNQdS_gJlUnYJAd4xr",
-      images: [],
-      url: "#",
-    },
-  ];
+  const hardcodedProjects = [];
 
   const allProjects = [];
   if (profile && profile.projects && profile.projects.length > 0) {

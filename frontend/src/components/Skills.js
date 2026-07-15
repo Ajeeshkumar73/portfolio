@@ -135,12 +135,14 @@ function Skills({ profile }) {
     "JavaScript",
     "Django",
     "Flask",
+    "SQL",
   ]);
 
   const databaseSkills = getSkillsForCategory(profile?.databaseSkills, [
     "MySQL",
     "MongoDB",
     "SQLite",
+    "PostgreSQL",
   ]);
 
   const toolsSkills = getSkillsForCategory(profile?.toolsSkills, [
@@ -149,6 +151,10 @@ function Skills({ profile }) {
     "VS Code",
     "Jupyter Notebook",
     "Excel",
+    "vercel",
+    "Render",
+    "vite",
+    "npm",
   ]);
 
   const otherSkillsList = profile?.otherSkills
@@ -165,6 +171,21 @@ function Skills({ profile }) {
         "DBMS",
       ];
 
+  const shouldHideIcon = (skillName) => {
+    const name = skillName.trim().toLowerCase();
+    const hideList = [
+      "sql",
+      "render",
+      "jupyter",
+      "jupyter notebook",
+      "jupyternotebook",
+      "excel",
+      "microsoft excel",
+      "ms excel"
+    ];
+    return hideList.includes(name);
+  };
+
   const renderSkillIconCard = (title, skillsList) => {
     return (
       <div className="bg-white shadow-md border border-outline/10 p-8 flex flex-col gap-6 hover:border-primary transition-all duration-300 rounded-lg">
@@ -172,21 +193,32 @@ function Skills({ profile }) {
           {title}
         </h4>
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {skillsList.map((skill, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-surface-container transition-colors duration-200 w-full"
-            >
-              <img
-                src={`https://skillicons.dev/icons?i=${skillToSlug(skill)}`}
-                alt={skill}
-                className="w-12 h-12 object-contain hover:scale-110 transition-transform duration-200"
-              />
-              <span className="text-[11px] sm:text-xs font-semibold text-on-surface-variant text-center max-w-full leading-tight">
-                {skill}
-              </span>
-            </div>
-          ))}
+          {skillsList.map((skill, index) => {
+            const hideIcon = shouldHideIcon(skill);
+            return (
+              <div
+                key={index}
+                className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-surface-container transition-colors duration-200 w-full"
+              >
+                {hideIcon ? (
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-outline/10 flex items-center justify-center hover:scale-110 transition-transform duration-200 shadow-sm">
+                    <span className="text-sm font-bold text-primary">
+                      {skill.trim().charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                ) : (
+                  <img
+                    src={`https://skillicons.dev/icons?i=${skillToSlug(skill)}`}
+                    alt={skill}
+                    className="w-12 h-12 object-contain hover:scale-110 transition-transform duration-200"
+                  />
+                )}
+                <span className="text-[11px] sm:text-xs font-semibold text-on-surface-variant text-center max-w-full leading-tight">
+                  {skill}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
     );

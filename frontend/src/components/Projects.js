@@ -6,7 +6,7 @@ import {
   LearnLoop,
 } from "../assets/ProjectImage";
 
-function Projects({ profile }) {
+function Projects({ profile, loading }) {
   const [lightbox, setLightbox] = useState({
     isOpen: false,
     images: [],
@@ -148,127 +148,140 @@ function Projects({ profile }) {
             <span style={{ fontSize: "13px", marginLeft: "1px" }}>↗</span>
           </a>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-          {allProjects.map((project, idx) => {
-            const imagesList = getProjectImagesList(project);
-            return (
-              <div
-                key={idx}
-                class="border border-outline/10 bg-surface flex flex-col group cursor-pointer hover:border-primary/30 transition-colors"
-              >
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-20 px-8 border border-outline/10 bg-surface/50 rounded-xl w-full min-h-[300px] gap-5">
+            <div className="flex items-center gap-2.5">
+              <div className="w-3.5 h-3.5 bg-primary/70 rounded-full animate-bounce" style={{ animationDelay: "-0.3s" }}></div>
+              <div className="w-3.5 h-3.5 bg-primary/70 rounded-full animate-bounce" style={{ animationDelay: "-0.15s" }}></div>
+              <div className="w-3.5 h-3.5 bg-primary/70 rounded-full animate-bounce" style={{ animationDelay: "0s" }}></div>
+            </div>
+            <p className="font-label-mono text-xs text-on-surface-variant/80 tracking-widest uppercase animate-pulse">
+              Loading projects from Render API...
+            </p>
+          </div>
+        ) : (
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+            {allProjects.map((project, idx) => {
+              const imagesList = getProjectImagesList(project);
+              return (
                 <div
-                  class="w-full aspect-video bg-surface-container-high relative overflow-hidden flex items-center justify-center"
-                  onClick={() => {
-                    if (imagesList.length > 0) {
-                      openLightbox(imagesList, 0);
-                    }
-                  }}
+                  key={idx}
+                  class="border border-outline/10 bg-surface flex flex-col group cursor-pointer hover:border-primary/30 transition-colors"
                 >
-                  {getProjectImage(project.title) || project.image ? (
-                    <img
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      src={getProjectImage(project.title) || project.image}
-                    />
-                  ) : (
-                    <div className="text-on-surface-variant font-body-md">
-                      No project image uploaded
-                    </div>
-                  )}
-                </div>
-
-                <div class="p-8 flex flex-col gap-4">
-                  {/* Title */}
-                  <h4 class="font-headline-md text-headline-md text-primary">
-                    {project.title}
-                  </h4>
-
-                  {/* Description preview (always visible, 2 lines clamped) */}
-                  <p
-                    class="font-body-md text-body-md text-on-surface-variant"
-                    style={{
-                      display: "-webkit-box",
-                      WebkitLineClamp: expandedMap[idx] ? "unset" : 2,
-                      WebkitBoxOrient: "vertical",
-                      overflow: expandedMap[idx] ? "visible" : "hidden",
-                      transition: "all 0.3s ease",
+                  <div
+                    class="w-full aspect-video bg-surface-container-high relative overflow-hidden flex items-center justify-center"
+                    onClick={() => {
+                      if (imagesList.length > 0) {
+                        openLightbox(imagesList, 0);
+                      }
                     }}
                   >
-                    {project.description}
-                  </p>
+                    {getProjectImage(project.title) || project.image ? (
+                      <img
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        src={getProjectImage(project.title) || project.image}
+                      />
+                    ) : (
+                      <div className="text-on-surface-variant font-body-md">
+                        No project image uploaded
+                      </div>
+                    )}
+                  </div>
 
-                  {/* Expand / Collapse arrow — below description */}
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleExpand(idx);
-                      }}
+                  <div class="p-8 flex flex-col gap-4">
+                    {/* Title */}
+                    <h4 class="font-headline-md text-headline-md text-primary">
+                      {project.title}
+                    </h4>
+
+                    {/* Description preview (always visible, 2 lines clamped) */}
+                    <p
+                      class="font-body-md text-body-md text-on-surface-variant"
                       style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "4px",
-                        background: "none",
-                        border: "none",
-                        padding: 0,
-                        cursor: "pointer",
-                        fontSize: "11px",
-                        fontWeight: "600",
-                        letterSpacing: "0.06em",
-                        color: "#444",
+                        display: "-webkit-box",
+                        WebkitLineClamp: expandedMap[idx] ? "unset" : 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: expandedMap[idx] ? "visible" : "hidden",
+                        transition: "all 0.3s ease",
                       }}
-                      aria-label={expandedMap[idx] ? "Collapse" : "Expand"}
                     >
-                      {expandedMap[idx] ? "Less" : "More"}
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        style={{
-                          transition: "transform 0.3s",
-                          transform: expandedMap[idx]
-                            ? "rotate(180deg)"
-                            : "rotate(0deg)",
-                        }}
-                      >
-                        <polyline points="6 9 12 15 18 9" />
-                      </svg>
-                    </button>
-                  </div>
+                      {project.description}
+                    </p>
 
-                  <div class="flex flex-wrap gap-2">
-                    {project.tech.map((t, tIdx) => (
-                      <span
-                        key={tIdx}
-                        class="bg-surface-container px-3 py-1 font-label-mono text-label-mono text-on-surface-variant"
+                    {/* Expand / Collapse arrow — below description */}
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleExpand(idx);
+                        }}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          background: "none",
+                          border: "none",
+                          padding: 0,
+                          cursor: "pointer",
+                          fontSize: "11px",
+                          fontWeight: "600",
+                          letterSpacing: "0.06em",
+                          color: "#444",
+                        }}
+                        aria-label={expandedMap[idx] ? "Collapse" : "Expand"}
                       >
-                        #{t}
-                      </span>
-                    ))}
-                  </div>
-                  {project.url && project.url !== "#" && (
-                    <div className="mt-2">
-                      <a
-                        href={project.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 hover:underline font-medium inline-flex items-center gap-1"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Visit Project →
-                      </a>
+                        {expandedMap[idx] ? "Less" : "More"}
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          style={{
+                            transition: "transform 0.3s",
+                            transform: expandedMap[idx]
+                              ? "rotate(180deg)"
+                              : "rotate(0deg)",
+                          }}
+                        >
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </button>
                     </div>
-                  )}
+
+                    <div class="flex flex-wrap gap-2">
+                      {project.tech.map((t, tIdx) => (
+                        <span
+                          key={tIdx}
+                          class="bg-surface-container px-3 py-1 font-label-mono text-label-mono text-on-surface-variant"
+                        >
+                          #{t}
+                        </span>
+                      ))}
+                    </div>
+                    {project.url && project.url !== "#" && (
+                      <div className="mt-2">
+                        <a
+                          href={project.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 hover:underline font-medium inline-flex items-center gap-1"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Visit Project →
+                        </a>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       {/* Lightbox Modal */}

@@ -12,6 +12,7 @@ import Skills from "../components/Skills";
 
 function Home() {
   const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -20,6 +21,8 @@ function Home() {
         setProfile(response.data);
       } catch (err) {
         console.error("Error fetching profile on home page:", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProfile();
@@ -32,8 +35,8 @@ function Home() {
         <HeroSection profile={profile} />
         <About profile={profile} />
         <Skills profile={profile} />
-        <Projects profile={profile} />
-        <Certificate profile={profile} />
+        <Projects profile={profile} loading={loading} />
+        <Certificate profile={profile} loading={loading} />
         <Contact profile={profile} />
       </main>
       <Footer />

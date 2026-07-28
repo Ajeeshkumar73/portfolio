@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import API_URL from "../config";
-import Resume from "../assets/Resume/AJEESH KUMAR B S.pdf";
+import Resume from "../assets/Resume/AJEESH KUMAR B S - Resume.pdf";
 
 function Contact({ profile }) {
   const [formData, setFormData] = useState({

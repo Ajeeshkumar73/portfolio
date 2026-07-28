@@ -123,67 +123,6 @@ function Contact({ profile }) {
               </span>
             </a>
           </div>
-
-          {status.text && (
-            <div
-              className={`p-4 mb-6 border ${
-                status.type === "success"
-                  ? "bg-green-500/10 border-green-500/30 text-green-700"
-                  : status.type === "loading"
-                    ? "bg-primary/5 border-primary/20 text-primary animate-pulse"
-                    : "bg-red-500/10 border-red-500/30 text-red-600"
-              }`}
-            >
-              <div className="font-semibold text-sm">{status.text}</div>
-            </div>
-          )}
-          <form onSubmit={sendMessage} class="flex flex-col gap-6">
-            <div class="flex flex-col gap-2">
-              <label class="font-label-mono text-label-mono uppercase text-on-surface-variant">
-                Name
-              </label>
-              <input
-                class="w-full bg-transparent border-0 border-b border-outline/20 focus:border-primary focus:ring-0 px-0 py-2 font-body-md text-primary placeholder-outline/40 transition-colors"
-                placeholder="John Doe"
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-              />
-            </div>
-            <div class="flex flex-col gap-2">
-              <label class="font-label-mono text-label-mono uppercase text-on-surface-variant">
-                Email
-              </label>
-              <input
-                class="w-full bg-transparent border-0 border-b border-outline/20 focus:border-primary focus:ring-0 px-0 py-2 font-body-md text-primary placeholder-outline/40 transition-colors"
-                placeholder="john@example.com"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </div>
-            <div class="flex flex-col gap-2 mt-4">
-              <label class="font-label-mono text-label-mono uppercase text-on-surface-variant">
-                Message
-              </label>
-              <textarea
-                class="w-full bg-transparent border-0 border-b border-outline/20 focus:border-primary focus:ring-0 px-0 py-2 font-body-md text-primary placeholder-outline/40 transition-colors resize-none"
-                placeholder="How can we work together?"
-                rows="4"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-              ></textarea>
-            </div>
-            <button
-              class="mt-4 bg-primary text-on-primary px-8 py-4 rounded-none hover:bg-accent transition-colors duration-200 font-label-mono text-label-mono uppercase tracking-widest self-start"
-              type="submit"
-            >
-              Send Message
-            </button>
-          </form>
         </div>
       </section>
     </>

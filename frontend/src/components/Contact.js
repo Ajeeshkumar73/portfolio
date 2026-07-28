@@ -54,37 +54,6 @@ function Contact({ profile }) {
             I'll try my best to get back to you!
           </p>
 
-          {/* Direct Contact Info */}
-          <div className="flex flex-col gap-4 my-2">
-            <a
-              href="mailto:ajeeshkumarbs168@gmail.com"
-              className="flex items-center gap-4 text-black hover:text-primary transition-colors duration-200 group"
-            >
-              <span className="w-12 h-12 border border-outline/20 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                </svg>
-              </span>
-              <span className="font-body-md font-medium">
-                ajeeshkumarbs168@gmail.com
-              </span>
-            </a>
-
-            <a
-              href="https://wa.me/919567106498"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-4 text-black hover:text-primary transition-colors duration-200 group"
-            >
-              <span className="w-12 h-12 border border-outline/20 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.498 1.453 5.437 1.454 5.378 0 9.754-4.372 9.757-9.749.002-2.607-1.011-5.059-2.854-6.904C17.094 2.11 14.639.08 12.015.08c-5.385 0-9.761 4.374-9.764 9.751-.001 1.997.521 3.95 1.514 5.674l-.99 3.614 3.702-.971zm10.702-7.108c-.287-.144-1.696-.838-1.958-.934-.262-.096-.453-.144-.644.144-.191.288-.739.934-.906 1.125-.167.192-.334.215-.621.072-.288-.145-1.215-.448-2.313-1.43-.855-.763-1.433-1.706-1.6-1.994-.168-.288-.018-.444.126-.587.13-.129.288-.335.431-.503.144-.168.191-.288.287-.48.096-.192.048-.361-.024-.505-.072-.144-.644-1.554-.882-2.13-.232-.559-.469-.482-.644-.491-.167-.008-.359-.01-.55-.01s-.502.072-.765.361c-.263.288-1.004.982-1.004 2.396 0 1.415 1.028 2.784 1.171 2.977.144.192 2.023 3.088 4.901 4.331.685.296 1.219.473 1.637.605.689.219 1.316.188 1.812.114.553-.082 1.696-.693 1.935-1.362.24-.669.24-1.24.167-1.362-.072-.12-.262-.191-.55-.335z" />
-                </svg>
-              </span>
-              <span className="font-body-md font-medium">+91 9567106498</span>
-            </a>
-          </div>
-
           <div class="flex gap-4 mt-4">
             <a
               class="w-12 h-12 border border-outline/20 flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors"
@@ -122,6 +91,39 @@ function Contact({ profile }) {
         </div>
         <div class="md:col-span-1"></div>
         <div class="md:col-span-6">
+          {/* Direct Contact Info */}
+          <div className="flex flex-col gap-4 mb-8">
+            <a
+              href="mailto:ajeeshkumarbs168@gmail.com"
+              className="flex items-center gap-4 text-black hover:text-primary transition-colors duration-200 group"
+            >
+              <span className="w-12 h-12 border border-outline/20 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                </svg>
+              </span>
+              <span className="font-body-md font-medium text-black">
+                ajeeshkumarbs168@gmail.com
+              </span>
+            </a>
+
+            <a
+              href="https://wa.me/919567106498"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 text-black hover:text-primary transition-colors duration-200 group"
+            >
+              <span className="w-12 h-12 border border-outline/20 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.498 1.453 5.437 1.454 5.378 0 9.754-4.372 9.757-9.749.002-2.607-1.011-5.059-2.854-6.904C17.094 2.11 14.639.08 12.015.08c-5.385 0-9.761 4.374-9.764 9.751-.001 1.997.521 3.95 1.514 5.674l-.99 3.614 3.702-.971zm10.702-7.108c-.287-.144-1.696-.838-1.958-.934-.262-.096-.453-.144-.644.144-.191.288-.739.934-.906 1.125-.167.192-.334.215-.621.072-.288-.145-1.215-.448-2.313-1.43-.855-.763-1.433-1.706-1.6-1.994-.168-.288-.018-.444.126-.587.13-.129.288-.335.431-.503.144-.168.191-.288.287-.48.096-.192.048-.361-.024-.505-.072-.144-.644-1.554-.882-2.13-.232-.559-.469-.482-.644-.491-.167-.008-.359-.01-.55-.01s-.502.072-.765.361c-.263.288-1.004.982-1.004 2.396 0 1.415 1.028 2.784 1.171 2.977.144.192 2.023 3.088 4.901 4.331.685.296 1.219.473 1.637.605.689.219 1.316.188 1.812.114.553-.082 1.696-.693 1.935-1.362.24-.669.24-1.24.167-1.362-.072-.12-.262-.191-.55-.335z" />
+                </svg>
+              </span>
+              <span className="font-body-md font-medium text-black">
+                +91 9567106498
+              </span>
+            </a>
+          </div>
+
           {status.text && (
             <div
               className={`p-4 mb-6 border ${
@@ -133,29 +135,6 @@ function Contact({ profile }) {
               }`}
             >
               <div className="font-semibold text-sm">{status.text}</div>
-              {status.type === "error" && (
-                <div className="mt-3 pt-3 border-t border-outline/10">
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-red-700/80 mb-2">
-                    Alternatively, contact me directly:
-                  </p>
-                  <div className="flex flex-col gap-2 text-xs">
-                    <a
-                      href="mailto:ajeeshkumarbs168@gmail.com"
-                      className="hover:underline flex items-center gap-1.5 font-semibold text-on-surface"
-                    >
-                      <span>📧</span> ajeeshkumarbs168@gmail.com
-                    </a>
-                    <a
-                      href="https://wa.me/919567106498"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:underline flex items-center gap-1.5 font-semibold text-on-surface"
-                    >
-                      <span>💬</span> WhatsApp
-                    </a>
-                  </div>
-                </div>
-              )}
             </div>
           )}
           <form onSubmit={sendMessage} class="flex flex-col gap-6">

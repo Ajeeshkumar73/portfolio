@@ -1,42 +1,8 @@
-import { useState } from "react";
-import axios from "axios";
-import API_URL from "../config";
 import Resume from "../assets/Resume/AJEESH KUMAR B S - Resume.pdf";
 
 function Contact({ profile }) {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
 
-  const [status, setStatus] = useState({ type: "", text: "" });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const sendMessage = async (e) => {
-    e.preventDefault();
-    setStatus({ type: "loading", text: "Sending your message..." });
-    try {
-      await axios.post(`${API_URL}/portfolio/contact/`, formData);
-
-      setStatus({ type: "success", text: "Message Sent Successfully!" });
-
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      });
-    } catch (err) {
-      const serverMsg = err.response?.data?.message;
-      setStatus({
-        type: "error",
-        text: `Failed to send message. ${serverMsg || err.message}`,
-      });
-    }
-  };
 
   return (
     <>

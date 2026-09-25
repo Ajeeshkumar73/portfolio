@@ -1,9 +1,6 @@
-import Resume from "../assets/Resume/AJEESH KUMAR B S - Resume.pdf";
+import Resume from "../assets/Resume/AJEESH KUMAR B S.pdf";
 
 function Contact({ profile }) {
-
-
-
   return (
     <>
       <section

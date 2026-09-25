@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import HeroSection from "../components/HeroSection";
 import Navbar from "../components/Navbar";
 import Projects from "../components/Projects";
+import Services from "../components/Services";
 import Skills from "../components/Skills";
 
 function Home() {
@@ -29,17 +30,22 @@ function Home() {
   }, []);
 
   return (
-    <div className="bg-background text-on-background font-body-md text-body-md antialiased selection:bg-primary selection:text-on-primary  flex flex-col">
+    <div className="bg-background text-on-background font-body-md text-body-md antialiased selection:bg-primary selection:text-on-primary flex flex-col">
       <Navbar />
       <main className="flex-grow flex flex-col items-center w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-24 pb-section-gap gap-section-gap">
         <HeroSection profile={profile} />
         <About profile={profile} />
-        <Skills profile={profile} />
+        <Services />
         <Projects profile={profile} loading={loading} />
+        <Skills profile={profile} />
         <Certificate profile={profile} loading={loading} />
-        <Contact profile={profile} />
       </main>
-      <Footer />
+      <div className="w-full bg-black text-white">
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+          <Contact profile={profile} />
+        </div>
+        <Footer />
+      </div>
     </div>
   );
 }

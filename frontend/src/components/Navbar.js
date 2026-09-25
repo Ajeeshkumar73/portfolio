@@ -15,6 +15,12 @@ function Navbar() {
             </a>
             <a
               className="text-on-surface-variant dark:text-on-surface-variant hover:text-black transition-colors font-body-md text-body-md"
+              href="#services"
+            >
+              Services
+            </a>
+            <a
+              className="text-on-surface-variant dark:text-on-surface-variant hover:text-black transition-colors font-body-md text-body-md"
               href="#skills"
             >
               Skills
@@ -40,7 +46,6 @@ function Navbar() {
           </div>
           <a href="#contact">
             <button
-              href="#contact"
               className="hidden md:block bg-primary text-on-primary px-6 py-2 rounded-none hover:bg-accent hover:text-on-secondary transition-colors duration-200 font-label-mono text-label-mono uppercase tracking-widest"
             >
               Hire Me

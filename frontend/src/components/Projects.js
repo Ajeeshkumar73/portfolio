@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Farmie,
   ScoreTacker,
@@ -6,401 +9,213 @@ import {
   LearnLoop,
 } from "../assets/ProjectImage";
 
-function Projects({ profile, loading }) {
-  const [lightbox, setLightbox] = useState({
-    isOpen: false,
-    images: [],
-    currentIndex: 0,
-  });
-  const [expandedMap, setExpandedMap] = useState({});
+gsap.registerPlugin(ScrollTrigger);
 
-  const toggleExpand = (idx) => {
-    setExpandedMap((prev) => ({ ...prev, [idx]: !prev[idx] }));
-  };
+function Projects({ profile, loading }) {
+  const projectsRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Left header entrance
+      gsap.fromTo(
+        ".projects-left",
+        { x: -50, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 1.0,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: projectsRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        },
+      );
+
+      // Project cards staggered entrance on scroll
+      const cards = gsap.utils.toArray(".project-card-item");
+      cards.forEach((card) => {
+        gsap.fromTo(
+          card,
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        );
+      });
+    }, projectsRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const getProjectImage = (title) => {
     if (!title) return null;
     const t = title.toLowerCase();
     if (t.includes("learnloop")) return LearnLoop;
-    if (t.includes("wellness wave") || t.includes("wellness-wave")) return WellnessWave;
-    if (t.includes("score tracker") || t.includes("score-tracker") || t.includes("scoretacker") || t.includes("score tacker")) return ScoreTacker;
+    if (t.includes("wellness wave") || t.includes("wellness-wave"))
+      return WellnessWave;
+    if (
+      t.includes("score tracker") ||
+      t.includes("score-tracker") ||
+      t.includes("scoretacker") ||
+      t.includes("score tacker")
+    )
+      return ScoreTacker;
     if (t.includes("farmie")) return Farmie;
     return null;
   };
 
   const hardcodedProjects = [
     {
-      title: "LEARNLOOP | AI-Powered Career Guidance & Skill Development Platform",
-      description: "Developed an AI-powered Career Guidance and Skill Development Platform that helps users identify suitable career paths through personalized recommendations, skill-gap analysis, and customized learning roadmaps. The platform integrates an AI mentor chatbot, resume generation, and job description analysis using Large Language Models and Natural Language Processing techniques. It also includes community collaboration features, secure authentication, media management, and scalable backend architecture for enhanced user engagement and career planning.",
-      tech: [
-        "HTML5",
-        "CSS3",
-        "JavaScript",
-        "Tailwind CSS",
-        "Python",
-        "Django",
-        "MongoDB",
-        "LLaMA 3.3 70B",
-        "Groq API",
-        "NLP",
-        "REST API",
-        "Google OAuth 2.0",
-        "Git",
-        "GitHub"
-      ],
+      id: "learnloop",
+      title:
+        "LEARNLOOP | AI-Powered Career Guidance & Skill Development Platform",
+      year: "2026",
       image: LearnLoop,
-      images: [LearnLoop],
-      url: "https://github.com/Ajeeshkumar73/LearnLoop"
     },
     {
-      title: "WELLNESS WAVE | Early Lifestyle Disease Prediction and Prevention System",
-      description: "Developed an AI-powered Lifestyle Disease Prediction and Healthcare Management Platform that analyzes user health data using deep learning models to predict the risk of lifestyle diseases and classify users into low, intermediate, or high-risk categories. The system provides personalized preventive healthcare recommendations, including diet plans, exercise routines, and healthy lifestyle habits for low- and intermediate-risk users, while recommending consultations with relevant medical specialists for high-risk individuals. The platform also integrates an AI chatbot for healthcare assistance, doctor appointment booking, real-time communication, appointment reminders, and health report generation to enhance preventive care and patient engagement. Built with a scalable architecture, responsive user interface, and secure data management practices",
-      tech: [
-        "HTML5",
-        "CSS3",
-        "JavaScript",
-        "Tailwind CSS",
-        "Python",
-        "Flask",
-        "MongoDB",
-        "PyTorch TabNet",
-        "Deep Learning",
-        "Qwen 3 32B",
-        "Groq API",
-        "Flask-SocketIO",
-        "REST API",
-        "Git",
-        "GitHub"
-      ],
+      id: "wellness-wave",
+      title:
+        "WELLNESS WAVE | Early Lifestyle Disease Prediction and Prevention System",
+      year: "2026",
       image: WellnessWave,
-      images: [WellnessWave],
-      url: "https://github.com/Ajeeshkumar73/wellness_wave_main"
     },
     {
-      title: "SCORE TRACKER | Employee Productivity Monitoring and Smart Task Recommendation System",
-      description: "Developed an AI-powered workforce management platform that analyzes employee performance, tracks productivity trends, and generates real-time insights to improve organizational efficiency. Implemented a smart task recommendation engine that assigns tasks based on employee skills, workload, and historical performance data, ensuring optimal resource utilization. Integrated attendance tracking, leave management, and interactive analytical dashboards with real-time communication features and optimized database operations.",
-      tech: [
-        "Python",
-        "Flask",
-        "MongoDB",
-        "Random Forest",
-        "Machine Learning",
-        "Scikit-learn",
-        "Socket.IO",
-        "NumPy",
-        "Pandas",
-        "HTML5",
-        "CSS3",
-        "JavaScript",
-        "Tailwind CSS"
-      ],
+      id: "score-tracker",
+      title:
+        "SCORE TRACKER | Employee Productivity Monitoring and Smart Task Recommendation System",
+      year: "2026",
       image: ScoreTacker,
-      images: [ScoreTacker],
-      url: "https://github.com/Ajeeshkumar73/score-tracker"
     },
     {
+      id: "farmie",
       title: "FARMIE | Web-Based Agriculture Management System",
-      description: "Developed a full-stack agriculture management platform featuring AI-powered plant disease detection, crop cultivation guidance, and an online marketplace for farmers to manage and sell agricultural products. Built with a responsive interface, secure backend services, and scalable software engineering practices.",
-      tech: [
-        "Python",
-        "Flask",
-        "MongoDB",
-        "Scikit-learn",
-        "NumPy",
-        "Random Forest",
-        "Machine Learning",
-        "HTML5",
-        "CSS3",
-        "JavaScript",
-        "Tailwind CSS"
-      ],
+      year: "2025",
       image: Farmie,
-      images: [Farmie],
-      url: "https://github.com/Ajeeshkumar73/farmie"
-    }
+    },
   ];
 
   const allProjects = hardcodedProjects;
 
-  const getProjectImagesList = (project) => {
-    const localImg = getProjectImage(project.title);
-    if (localImg) {
-      return [localImg];
-    }
-    const list = [];
-    if (project.image) {
-      list.push(project.image);
-    }
-    return list;
-  };
-
-  const openLightbox = (imagesList, index) => {
-    setLightbox({
-      isOpen: true,
-      images: imagesList,
-      currentIndex: index,
-    });
-  };
-
   return (
     <>
       <section
-        class="w-full flex flex-col gap-12 pt-16 border-t border-outline/10"
+        ref={projectsRef}
+        className="w-full pt-16 border-t border-outline/10 relative"
         id="projects"
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <h3 class="font-headline-md text-headline-md text-primary">
-            Selected Work
-          </h3>
-          <a
-            href="https://github.com/Ajeeshkumar73?tab=repositories"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              fontSize: "11px",
-              fontWeight: "600",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "#000000",
-              background: "rgba(0,0,0,0.06)",
-              border: "1px solid rgba(0,0,0,0.18)",
-              borderRadius: "999px",
-              padding: "5px 14px",
-              textDecoration: "none",
-              transition: "background 0.2s, border-color 0.2s, transform 0.2s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "rgba(0,0,0,0.12)";
-              e.currentTarget.style.borderColor = "rgba(0,0,0,0.4)";
-              e.currentTarget.style.transform = "translateY(-1px)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "rgba(0,0,0,0.06)";
-              e.currentTarget.style.borderColor = "rgba(0,0,0,0.18)";
-              e.currentTarget.style.transform = "translateY(0)";
-            }}
-          >
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12" />
-            </svg>
-            Explore More
-            <span style={{ fontSize: "13px", marginLeft: "1px" }}>↗</span>
-          </a>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-          {allProjects.map((project, idx) => {
-            const imagesList = getProjectImagesList(project);
-            return (
-              <div
-                key={idx}
-                class="border border-outline/10 bg-surface flex flex-col group cursor-pointer hover:border-primary/30 transition-colors"
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter items-start">
+          {/* Left Column - Sticky Header & Description & Explore More */}
+          <div className="projects-left md:col-span-5 flex flex-col gap-6 md:sticky md:top-28 self-start">
+            <h2 className="font-headline-lg text-headline-lg text-primary font-bold tracking-tight">
+              Selected Works
+            </h2>
+            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-md leading-relaxed">
+              Take a look at some of my standout projects, combining modern
+              design, seamless functionality, and engaging user experiences to
+              bring ideas to life.
+            </p>
+
+            <div>
+              <a
+                href="https://github.com/Ajeeshkumar73?tab=repositories"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border border-black bg-white text-black hover:bg-black hover:text-white transition-all duration-300 rounded-none px-5 py-2.5 text-xs font-semibold uppercase tracking-widest group shadow-2xs"
               >
+                Explore More
+                <span className="text-sm transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                  ↗
+                </span>
+              </a>
+            </div>
+          </div>
+
+          {/* Right Column - Clean List of Image + Title + Subtitle + Year */}
+          <div className="projects-right md:col-span-7 flex flex-col gap-14">
+            {allProjects.map((project, idx) => {
+              const projectImg =
+                getProjectImage(project.title) || project.image;
+              const titleParts = project.title.split("|");
+              const mainTitle =
+                titleParts.length > 1 ? titleParts[0].trim() : project.title;
+              const subtitle =
+                titleParts.length > 1
+                  ? titleParts.slice(1).join("|").trim()
+                  : "";
+
+              const handleNavigate = () => navigate(`/project/${project.id}`);
+
+              return (
                 <div
-                  class="w-full aspect-video bg-surface-container-high relative overflow-hidden flex items-center justify-center"
-                  onClick={() => {
-                    if (imagesList.length > 0) {
-                      openLightbox(imagesList, 0);
-                    }
-                  }}
+                  key={idx}
+                  className="project-card-item flex flex-col gap-3"
                 >
-                  {getProjectImage(project.title) || project.image ? (
-                    <img
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      src={getProjectImage(project.title) || project.image}
-                    />
-                  ) : (
-                    <div className="text-on-surface-variant font-body-md">
-                      No project image uploaded
-                    </div>
-                  )}
-                </div>
-
-                <div class="p-8 flex flex-col gap-4">
-                  {/* Title */}
-                  <h4 class="font-headline-md text-headline-md text-primary">
-                    {project.title}
-                  </h4>
-
-                  {/* Description preview (always visible, 2 lines clamped) */}
-                  <p
-                    class="font-body-md text-body-md text-on-surface-variant"
-                    style={{
-                      display: "-webkit-box",
-                      WebkitLineClamp: expandedMap[idx] ? "unset" : 2,
-                      WebkitBoxOrient: "vertical",
-                      overflow: expandedMap[idx] ? "visible" : "hidden",
-                      transition: "all 0.3s ease",
-                    }}
+                  {/* Image Showcase Container */}
+                  <div
+                    className="w-full aspect-[16/10] bg-surface-container-high rounded-xl border border-outline/10 relative overflow-hidden shadow-md group cursor-pointer"
+                    onClick={handleNavigate}
                   >
-                    {project.description}
-                  </p>
+                    {projectImg ? (
+                      <img
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                        src={projectImg}
+                      />
+                    ) : (
+                      <div className="text-on-surface-variant font-body-lg flex items-center justify-center h-full">
+                        No project image uploaded
+                      </div>
+                    )}
 
-                  {/* Expand / Collapse arrow — below description */}
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleExpand(idx);
-                      }}
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "4px",
-                        background: "none",
-                        border: "none",
-                        padding: 0,
-                        cursor: "pointer",
-                        fontSize: "11px",
-                        fontWeight: "600",
-                        letterSpacing: "0.06em",
-                        color: "#444",
-                      }}
-                      aria-label={expandedMap[idx] ? "Collapse" : "Expand"}
+                    {/* Centered Floating Rectangle "View Project" Button on Hover */}
+                    {projectImg && (
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300 ease-out">
+                        <span className="border border-black bg-white text-black font-semibold text-xs sm:text-sm uppercase tracking-widest px-6 py-3 rounded-none shadow-xl transform scale-90 group-hover:scale-100 transition-all duration-300 pointer-events-none">
+                          View Project
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Title & Year Row */}
+                  <div className="flex justify-between items-baseline border-b border-outline/20 pb-2 pt-1">
+                    <h3
+                      className="text-xl sm:text-2xl font-bold text-primary tracking-tight cursor-pointer hover:text-secondary transition-colors"
+                      onClick={handleNavigate}
                     >
-                      {expandedMap[idx] ? "Less" : "More"}
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        style={{
-                          transition: "transform 0.3s",
-                          transform: expandedMap[idx]
-                            ? "rotate(180deg)"
-                            : "rotate(0deg)",
-                        }}
-                      >
-                        <polyline points="6 9 12 15 18 9" />
-                      </svg>
-                    </button>
+                      {mainTitle}
+                    </h3>
+                    <span className="text-sm sm:text-base font-semibold text-on-surface-variant font-mono">
+                      {project.year || "2025"}
+                    </span>
                   </div>
 
-                  <div class="flex flex-wrap gap-2">
-                    {project.tech.map((t, tIdx) => (
-                      <span
-                        key={tIdx}
-                        class="bg-surface-container px-3 py-1 font-label-mono text-label-mono text-on-surface-variant"
-                      >
-                        #{t}
-                      </span>
-                    ))}
-                  </div>
-                  {project.url && project.url !== "#" && (
-                    <div className="mt-2">
-                      <a
-                        href={project.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 hover:underline font-medium inline-flex items-center gap-1"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Visit Project →
-                      </a>
-                    </div>
+                  {/* Subtitle / Sub-Name */}
+                  {subtitle && (
+                    <p
+                      className="text-sm sm:text-base text-on-surface-variant font-medium -mt-1 leading-snug cursor-pointer hover:text-black transition-colors"
+                      onClick={handleNavigate}
+                    >
+                      {subtitle}
+                    </p>
                   )}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </section>
-
-      {/* Lightbox Modal */}
-      {lightbox.isOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black/95 flex flex-col justify-center items-center p-4 transition-all duration-300"
-          onClick={() => setLightbox({ ...lightbox, isOpen: false })}
-        >
-          {/* Close button */}
-          <button
-            className="absolute top-6 right-6 text-white/80 hover:text-white p-2 bg-white/10 hover:bg-white/20 rounded-full transition"
-            onClick={(e) => {
-              e.stopPropagation();
-              setLightbox({ ...lightbox, isOpen: false });
-            }}
-          >
-            <span className="material-symbols-outlined block text-3xl">
-              close
-            </span>
-          </button>
-
-          {/* Main Image Container */}
-          <div
-            className="relative max-w-5xl max-h-[80vh] w-full flex justify-center items-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={lightbox.images[lightbox.currentIndex]}
-              alt="Expanded view"
-              className="max-w-full max-h-[80vh] object-contain border border-white/10 shadow-2xl rounded-lg"
-            />
-
-            {/* Left Nav Button */}
-            {lightbox.images.length > 1 && (
-              <button
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-black/40 hover:text-white p-3 bg-white/10 hover:bg-white/20 rounded-full transition"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setLightbox({
-                    ...lightbox,
-                    currentIndex:
-                      (lightbox.currentIndex - 1 + lightbox.images.length) %
-                      lightbox.images.length,
-                  });
-                }}
-              >
-                <span className="material-symbols-outlined block text-3xl">
-                  arrow_back
-                </span>
-              </button>
-            )}
-
-            {/* Right Nav Button */}
-            {lightbox.images.length > 1 && (
-              <button
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-black/40 hover:text-white p-3 bg-white/10 hover:bg-white/20 rounded-full transition"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setLightbox({
-                    ...lightbox,
-                    currentIndex:
-                      (lightbox.currentIndex + 1) % lightbox.images.length,
-                  });
-                }}
-              >
-                <span className="material-symbols-outlined block text-3xl">
-                  arrow_forward
-                </span>
-              </button>
-            )}
-          </div>
-
-          {/* Indicator Info */}
-          <div className="mt-4 text-white/60 font-body-md bg-black/40 px-3 py-1 rounded-full">
-            {lightbox.currentIndex + 1} / {lightbox.images.length}
-          </div>
-        </div>
-      )}
     </>
   );
 }

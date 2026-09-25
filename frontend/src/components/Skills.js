@@ -1,284 +1,143 @@
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
 function Skills({ profile }) {
-  // Helper to map skill names to skillicons slugs
-  const skillToSlug = (skillName) => {
-    const name = skillName.trim().toLowerCase();
-    const mapping = {
-      javascript: "js",
-      typescript: "ts",
-      python: "py",
-      "c++": "cpp",
-      "c#": "cs",
-      react: "react",
-      "react.js": "react",
-      reactjs: "react",
-      node: "nodejs",
-      "node.js": "nodejs",
-      nodejs: "nodejs",
-      "next.js": "nextjs",
-      nextjs: "nextjs",
-      "vue.js": "vue",
-      vuejs: "vue",
-      vue: "vue",
-      angular: "angular",
-      angularjs: "angular",
-      tailwind: "tailwind",
-      tailwindcss: "tailwind",
-      "tailwind css": "tailwind",
-      bootstrap: "bootstrap",
-      sass: "sass",
-      scss: "sass",
-      html: "html",
-      html5: "html",
-      css: "css",
-      css3: "css",
-      django: "django",
-      flask: "flask",
-      fastapi: "fastapi",
-      "spring boot": "spring",
-      springboot: "spring",
-      spring: "spring",
-      laravel: "laravel",
-      express: "express",
-      "express.js": "express",
-      expressjs: "express",
-      mongodb: "mongodb",
-      mongo: "mongodb",
-      postgresql: "postgres",
-      postgres: "postgres",
-      mysql: "mysql",
-      sqlite: "sqlite",
-      redis: "redis",
-      graphql: "graphql",
-      apollo: "apollo",
-      docker: "docker",
-      kubernetes: "kubernetes",
-      k8s: "kubernetes",
-      aws: "aws",
-      gcp: "gcp",
-      azure: "azure",
-      firebase: "firebase",
-      git: "git",
-      github: "github",
-      gitlab: "gitlab",
-      bitbucket: "bitbucket",
-      figma: "figma",
-      postman: "postman",
-      vscode: "vscode",
-      "vs code": "vscode",
-      npm: "npm",
-      yarn: "yarn",
-      pnpm: "pnpm",
-      vite: "vite",
-      webpack: "webpack",
-      babel: "babel",
-      tensorflow: "tensorflow",
-      pytorch: "pytorch",
-      "scikit-learn": "sklearn",
-      scikitlearn: "sklearn",
-      sklearn: "sklearn",
-      opencv: "opencv",
-      pandas: "pandas",
-      numpy: "numpy",
-      c: "c",
-      java: "java",
-      kotlin: "kotlin",
-      swift: "swift",
-      dart: "dart",
-      flutter: "flutter",
-      linux: "linux",
-      ubuntu: "ubuntu",
-      windows: "windows",
-      apple: "apple",
-      android: "android",
-      nginx: "nginx",
-      heroku: "heroku",
-      vercel: "vercel",
-      netlify: "netlify",
-      jenkins: "jenkins",
-      "github actions": "githubactions",
-      githubactions: "githubactions",
-      jupyter: "jupyter",
-      "jupyter notebook": "jupyter",
-      jupyternotebook: "jupyter",
-      excel: "excel",
-      "microsoft excel": "excel",
-      "ms excel": "excel",
-    };
+  const skillsRef = useRef(null);
 
-    if (mapping[name]) return mapping[name];
-    return name.replace(/[^a-z0-9]/g, "");
-  };
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Left side entrance
+      gsap.fromTo(
+        ".skills-left",
+        { x: -50, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 1.0,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: skillsRef.current,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        },
+      );
 
-  const getSkillsForCategory = (fieldValue, defaultSkills) => {
-    if (fieldValue) {
-      return fieldValue
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
-    }
-    return defaultSkills;
-  };
+      // Skill rows staggered entrance on scroll
+      const rows = gsap.utils.toArray(".skill-row");
+      rows.forEach((row) => {
+        gsap.fromTo(
+          row,
+          { y: 35, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: row,
+              start: "top 88%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        );
+      });
+    }, skillsRef);
 
-  const frontendSkills = getSkillsForCategory(profile?.frontendSkills, [
-    "React",
-    "Tailwind",
-    "Bootstrap",
-    "HTML5",
-    "CSS3",
-    "JavaScript",
-  ]);
+    return () => ctx.revert();
+  }, []);
 
-  const backendSkills = getSkillsForCategory(profile?.backendSkills, [
-    "Python",
-    "PHP",
-    "C",
-    "JavaScript",
-    "Django",
-    "Flask",
-    "SQL",
-  ]);
-
-  const databaseSkills = getSkillsForCategory(profile?.databaseSkills, [
-    "MySQL",
-    "MongoDB",
-    "SQLite",
-    "PostgreSQL",
-  ]);
-
-  const toolsSkills = getSkillsForCategory(profile?.toolsSkills, [
-    "Git",
-    "GitHub",
-    "VS Code",
-    "Jupyter Notebook",
-    "Excel",
-    "vercel",
-    "Render",
-    "vite",
-    "npm",
-  ]);
-
-  const otherSkillsList = [
-    "Artificial Intelligence",
-    "Machine Learning",
-    "Deep Learning",
-    "Scikit-Learn",
-    "LLM Integration",
-    "PyTorch TabNet",
-    "REST APIs",
-    "MVC Architecture",
-    "Data Structures",
-    "Algorithms",
-    "OOP",
-    "RDBMS",
-    "Django REST Framework",
-    "Jinja2",
-    "Flask-SocketIO",
-    "Full Stack Development",
-    "SDLC",
-    "NLP",
-    "Responsive Web Design",
-    "Authentication & Authorization",
-    "SPA",
-    "Software Testing & Debugging",
-    "Random Forest",
-    "API Integration",
+  const categories = [
+    {
+      name: "Frontend",
+      skills: ["HTML5", "CSS3", "JavaScript"],
+    },
+    {
+      name: "Frameworks & Libraries",
+      skills: ["React.js", "Tailwind CSS", "Bootstrap"],
+    },
+    {
+      name: "Backend & Languages",
+      skills: ["Python", "C", "Django", "Flask", "REST APIs"],
+    },
+    {
+      name: "Databases",
+      skills: ["MySQL", "MongoDB", "SQLite"],
+    },
+    {
+      name: "AI & Machine Learning",
+      skills: [
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Deep Learning",
+        "LLM Integration",
+        "Scikit-Learn",
+        "NLP",
+      ],
+    },
+    {
+      name: "Tools & Platforms",
+      skills: ["Git", "GitHub", "VS Code", "Figma", "AI Tools"],
+    },
+    {
+      name: "Deployment",
+      skills: ["Vercel", "Render", "Github Pages"],
+    },
   ];
 
-  const shouldHideIcon = (skillName) => {
-    const name = skillName.trim().toLowerCase();
-    const hideList = [
-      "sql",
-      "render",
-      "jupyter",
-      "jupyter notebook",
-      "jupyternotebook",
-      "excel",
-      "microsoft excel",
-      "ms excel",
-    ];
-    return hideList.includes(name);
-  };
+  return (
+    <section
+      ref={skillsRef}
+      className="w-full pt-16 border-t border-outline/10 relative"
+      id="skills"
+    >
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter items-start">
+        {/* Left Column - Sticky Header & Description */}
+        <div className="skills-left md:col-span-5 flex flex-col gap-6 md:sticky md:top-28 self-start">
+          <h2 className="font-headline-lg text-headline-lg text-primary font-bold tracking-tight">
+            Tech Stack
+          </h2>
+          <p className="font-body-lg text-body-lg text-on-surface-variant max-w-md leading-relaxed">
+            I utilize a wide range of cutting-edge technologies to create fast,
+            responsive, and interactive websites that deliver exceptional user
+            experiences. Here's the toolkit that powers my work.
+          </p>
+        </div>
 
-  const renderSkillIconCard = (title, skillsList) => {
-    return (
-      <div className="bg-white shadow-md border border-outline/10 p-8 flex flex-col gap-6 hover:border-primary transition-all duration-300 rounded-lg">
-        <h4 className="font-body-lg text-body-lg font-bold tracking-wider uppercase text-black flex items-center gap-2">
-          {title}
-        </h4>
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {skillsList.map((skill, index) => {
-            const hideIcon = shouldHideIcon(skill);
-            return (
-              <div
-                key={index}
-                className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-surface-container transition-colors duration-200 w-full"
-              >
-                {hideIcon ? (
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-outline/10 flex items-center justify-center hover:scale-110 transition-transform duration-200 shadow-sm">
-                    <span className="text-sm font-bold text-primary">
-                      {skill.trim().charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                ) : (
-                  <img
-                    src={`https://skillicons.dev/icons?i=${skillToSlug(skill)}`}
-                    alt={skill}
-                    className="w-12 h-12 object-contain hover:scale-110 transition-transform duration-200"
-                  />
-                )}
-                <span className="text-[11px] sm:text-xs font-semibold text-on-surface-variant text-center max-w-full leading-tight">
-                  {skill}
-                </span>
+        {/* Right Column - Categorized Rows with Rectangular Border Pills */}
+        <div className="skills-right md:col-span-7 flex flex-col">
+          {categories.map((cat, idx) => (
+            <div
+              key={idx}
+              className="skill-row group relative flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6 border-t border-outline/20 last:border-b transition-colors duration-200"
+            >
+              <h3 className="text-[19px] sm:text-[20px] font-semibold text-primary tracking-[-0.01em]">
+                {cat.name}
+              </h3>
+              <div className="flex flex-wrap gap-2.5 items-center justify-start sm:justify-end">
+                {cat.skills.map((skill, sIdx) => (
+                  <span
+                    key={sIdx}
+                    className="border border-outline/30 bg-white text-black text-sm sm:text-base font-medium px-3.5 py-1.5 rounded hover:border-black hover:bg-black hover:text-white transition-all duration-200 cursor-default shadow-2xs"
+                  >
+                    {skill}
+                  </span>
+                ))}
               </div>
-            );
-          })}
+
+              {/* Animated Black Flow Border on Hover */}
+              <span
+                className="absolute bottom-0 left-0 w-0 h-[2px] bg-black transition-all duration-750 ease-in-out group-hover:w-full pointer-events-none"
+                style={{ transitionDuration: "750ms" }}
+              ></span>
+            </div>
+          ))}
         </div>
       </div>
-    );
-  };
-
-  return (
-    <>
-      <section
-        className="w-full flex flex-col gap-12 pt-16 border-t border-outline/10"
-        id="skills"
-      >
-        <h3 className="font-headline-md text-headline-md text-primary">
-          Skills
-        </h3>
-
-        {/* Modern 2x2 Grid representing the Table layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-          {renderSkillIconCard("Frontend & Libraries", frontendSkills)}
-          {renderSkillIconCard("Languages & Backend", backendSkills)}
-          {renderSkillIconCard("Databases", databaseSkills)}
-          {renderSkillIconCard("Tools & Platforms", toolsSkills)}
-        </div>
-
-        {/* Bottom Section: Other Skills */}
-        {otherSkillsList.length > 0 && (
-          <div className="bg-white shadow-md border border-outline/10 p-8 flex flex-col items-center justify-center text-center gap-6 hover:border-primary transition-all duration-300 rounded-lg w-full">
-            <h4 className="font-body-lg text-body-lg font-bold tracking-wider uppercase text-black">
-              Other Skills & Concepts
-            </h4>
-            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 max-w-4xl text-body-md text-on-surface-variant font-medium">
-              {otherSkillsList.map((skill, index) => (
-                <span key={index} className="flex items-center">
-                  <code className="bg-surface-container px-3 py-1 rounded text-primary border border-outline/5 text-sm font-mono">
-                    {skill}
-                  </code>
-                  {index < otherSkillsList.length - 1 && (
-                    <span className="text-secondary ml-3 text-lg font-bold">
-                      •
-                    </span>
-                  )}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-      </section>
-    </>
+    </section>
   );
 }
 

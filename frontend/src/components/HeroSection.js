@@ -1,57 +1,129 @@
-import Profile_pic from "../assets/profile_pic.png";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import Profile_pic from "../assets/profile_pic.jpeg";
 
 function HeroSection({ profile }) {
+  const heroRef = useRef(null);
   const imageSrc =
     profile && profile.profilePic ? profile.profilePic : Profile_pic;
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Initial state
+      gsap.set(".hero-subtext", { y: "-20px", opacity: 0 });
+      gsap.set(".hero-title-text", { y: "30px", opacity: 0 });
+      gsap.set(".hero-img-container", { x: "-40px", opacity: 0 });
+      gsap.set(".hero-right-content", { x: "40px", opacity: 0 });
+      gsap.set(".hero-img", { scale: 1.1 });
+
+      const tl = gsap.timeline({
+        defaults: { ease: "power4.out" },
+      });
+
+      tl.to(".hero-subtext", {
+        y: "0px",
+        opacity: 1,
+        duration: 0.8,
+      })
+        .to(
+          ".hero-title-text",
+          {
+            y: "0px",
+            opacity: 1,
+            duration: 1.0,
+          },
+          "-=0.6",
+        )
+        .to(
+          ".hero-img-container",
+          {
+            x: "0px",
+            opacity: 1,
+            duration: 1.1,
+            ease: "power3.out",
+          },
+          "-=0.7",
+        )
+        .to(
+          ".hero-right-content",
+          {
+            x: "0px",
+            opacity: 1,
+            duration: 1.0,
+            ease: "power3.out",
+          },
+          "-=0.9",
+        )
+        .to(
+          ".hero-img",
+          {
+            scale: 1,
+            duration: 1.3,
+            ease: "power3.out",
+          },
+          "-=1.1",
+        );
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  const handleScrollToServices = (e) => {
+    e.preventDefault();
+    const servicesEl = document.getElementById("services");
+    if (servicesEl) {
+      servicesEl.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <>
-      <section className="w-full grid grid-cols-1 md:grid-cols-12 gap-gutter items-center pt-6 pb-16 relative">
-        <div className="md:col-span-7 flex flex-col gap-6">
-          <span className="font-label-mono text-label-mono uppercase tracking-widest text-secondary">
-            Hello, I am
+      <section
+        ref={heroRef}
+        className="w-full flex flex-col gap-8 pt-8 pb-7 relative"
+        id="hero"
+      >
+        {/* Top Subtext and Large Title */}
+        <div className="flex flex-col gap-3 w-full">
+          <span className="hero-subtext font-label-mono text-label-mono uppercase tracking-widest text-secondary font-semibold">
+            Hello, I am Ajeesh Kumar B S
           </span>
-          <h1 className="font-display text-display text-primary">
-            Ajeesh Kumar B S.
-          </h1>
-          <h2 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface-variant">
+          <h1 className="hero-title-text font-headline-lg text-4xl sm:text-5xl md:text-6xl lg:text-[68px] font-bold text-black tracking-tight leading-[1.08] w-full">
             Full Stack &amp; Web Developer
-          </h2>
-          <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mt-4">
-            I am a passionate Full Stack Developer and Web Developer dedicated
-            to building modern, responsive, and user-friendly web applications.
-            With expertise in both frontend and backend technologies, I create
-            scalable digital solutions that combine clean design, efficient
-            functionality, and seamless user experiences. I enjoy transforming
-            ideas into impactful web products that solve real-world problems.
-          </p>
-          <div className="flex flex-wrap gap-4 mt-8">
-            <a href="#projects">
-              <button className="bg-primary text-on-primary px-8 py-4 rounded-none hover:bg-accent transition-colors duration-200 font-label-mono text-label-mono uppercase tracking-widest border border-primary">
-                View Projects
-              </button>
-            </a>
-            <a href="#contact">
-              <button className="bg-transparent text-primary px-8 py-4 rounded-none hover:bg-surface-container transition-colors duration-200 font-label-mono text-label-mono uppercase tracking-widest border border-primary/20">
-                Contact Me
-              </button>
-            </a>
+          </h1>
+        </div>
 
+        {/* 2-Column Split: B&W Image on Left, Paragraph + My Services on Right */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-stretch w-full mt-2">
+          {/* Left: Black & White Photo */}
+          <div className="hero-img-container md:col-span-6 relative flex flex-col justify-center">
+            <div className="w-full aspect-[16/10] bg-surface-container-high border border-outline/10 relative overflow-hidden flex items-center justify-center rounded-xl shadow-sm">
+              <img
+                alt="Professional headshot"
+                className="hero-img w-full h-full object-cover rounded-xl filter grayscale"
+                style={{ filter: "grayscale(100%)" }}
+                data-alt="A professional headshot of Ajeesh Kumar B S"
+                src={imageSrc}
+              />
+              <div className="absolute inset-0 border border-primary/10 pointer-events-none rounded-xl"></div>
+            </div>
+          </div>
+
+          {/* Right: Paragraph Description + Bottom Right My Services Link */}
+          <div className="hero-right-content md:col-span-6 flex flex-col justify-between pt-1">
+            <p className="font-body-lg text-[17px] sm:text-[18px] text-on-surface-variant leading-[1.75]">
+              I'm a passionate Full Stack Developer and Web Developer dedicated
+              to building modern, responsive, and user-friendly web
+              applications. With expertise in both frontend and backend
+              technologies, I create scalable digital solutions that combine
+              clean design, efficient functionality, and seamless user
+              experiences.
+            </p>
           </div>
         </div>
-        <div className="md:col-span-5 flex justify-end mt-12 md:mt-0 relative">
-          <div className="w-full aspect-[4/5] bg-surface-container-high border border-outline/10 relative overflow-hidden flex items-center justify-center">
-            <img
-              alt="Professional headshot"
-              className="w-full h-full object-cover"
-              data-alt="A professional headshot of a confident male software developer in his late 20s. He is wearing a crisp, dark minimalist shirt and looking directly at the camera with a subtle, professional smile. The background is a clean, bright studio setting with soft, high-key lighting that emphasizes a modern, light-mode aesthetic. The image is high-contrast with deep blacks and pristine whites, fitting a sophisticated, classic-modern portfolio design."
-              src={imageSrc}
-            />
-            <div className="absolute inset-0 border border-primary/10 pointer-events-none"></div>
-          </div>
-        </div>
-        <div className="scroll-indicator">
+
+        {/* Scroll Indicator */}
+        <div className="scroll-indicator" style={{ bottom: "-50px" }}>
           <div className="mouse"></div>
           <span>Scroll Down</span>
         </div>

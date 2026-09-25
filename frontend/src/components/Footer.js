@@ -1,27 +1,61 @@
 function Footer() {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
-    <>
-      <footer class="w-full py-16 px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-gutter bg-surface dark:bg-surface border-t border-outline/10 dark:border-outline-variant/10 max-w-container-max mx-auto">
-        <div class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant">
-          © 2026 Ajeesh Kumar B S. All rights reserved. Built with React.js,
-          Django, and Tailwind CSS.
-        </div>
-        <div class="flex flex-wrap justify-center gap-6">
+    <footer className="w-full border-t border-white/10 py-8 px-6 md:px-16">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-6 w-full max-w-container-max mx-auto">
+        {/* Left Side: Copyright */}
+        <span className="text-xs font-mono uppercase tracking-widest text-white/50">
+          © {new Date().getFullYear()} Ajeesh Kumar B S
+        </span>
+
+        {/* Right Side: GitHub, LinkedIn & Back to Top Button grouped together */}
+        <div className="flex items-center gap-6 flex-wrap justify-center sm:justify-end">
           <a
-            class="font-caption text-caption text-on-surface-variant dark:text-on-surface-variant hover:text-black underline decoration-1 underline-offset-4 transition-colors duration-200"
+            className="font-label-mono text-xs uppercase tracking-widest text-white/60 hover:text-white underline underline-offset-4 transition-colors duration-200"
             href="http://github.com/Ajeeshkumar73"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Github
           </a>
           <a
-            class="font-caption text-caption text-on-surface-variant dark:text-on-surface-variant hover:text-black underline decoration-1 underline-offset-4 transition-colors duration-200"
+            className="font-label-mono text-xs uppercase tracking-widest text-white/60 hover:text-white underline underline-offset-4 transition-colors duration-200"
             href="http://linkedin.com/in/ajeesh-kumar-b-s-60978631a"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             LinkedIn
           </a>
+          <button
+            onClick={scrollToTop}
+            className="group flex items-center gap-2 border border-white/20 px-5 py-2.5 rounded-full text-white hover:bg-white hover:text-black transition-all duration-300 font-label-mono text-xs uppercase tracking-widest cursor-pointer sm:ml-2"
+            title="Scroll Back to Top"
+          >
+            Back to Top
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="transition-transform duration-300 group-hover:-translate-y-1"
+            >
+              <line x1="12" y1="19" x2="12" y2="5" />
+              <polyline points="5 12 12 5 19 12" />
+            </svg>
+          </button>
         </div>
-      </footer>
-    </>
+      </div>
+    </footer>
   );
 }
 

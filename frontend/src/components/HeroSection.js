@@ -68,14 +68,6 @@ function HeroSection({ profile }) {
     return () => ctx.revert();
   }, []);
 
-  const handleScrollToServices = (e) => {
-    e.preventDefault();
-    const servicesEl = document.getElementById("services");
-    if (servicesEl) {
-      servicesEl.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <>
       <section

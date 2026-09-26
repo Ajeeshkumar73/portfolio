@@ -117,7 +117,6 @@ function ProjectDetail() {
   const [expanded, setExpanded] = useState(false);
   const pageRef = useRef(null);
   const imgRef = useRef(null);
-  const contentRef = useRef(null);
 
   const project = allProjects.find((p) => p.id === id);
 

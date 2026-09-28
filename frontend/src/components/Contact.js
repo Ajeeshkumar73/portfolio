@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Resume from "../assets/Resume/AJEESH KUMAR B S.pdf";
+import Resume from "../assets/Resume/AJEESH KUMAR B S_Resume.pdf";
 
 gsap.registerPlugin(ScrollTrigger);
 

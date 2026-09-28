@@ -7,6 +7,7 @@ import {
   ScoreTacker,
   WellnessWave,
   LearnLoop,
+  Medisphere,
 } from "../assets/ProjectImage";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -72,6 +73,7 @@ function Projects({ profile, loading }) {
     )
       return ScoreTacker;
     if (t.includes("farmie")) return Farmie;
+    if (t.includes("medisphere")) return Medisphere;
     return null;
   };
 
@@ -89,6 +91,13 @@ function Projects({ profile, loading }) {
         "WELLNESS WAVE | Early Lifestyle Disease Prediction and Prevention System",
       year: "2026",
       image: WellnessWave,
+    },
+    {
+      id: "medisphere",
+      title:
+        "MEDISPHERE | Intelligent Healthcare Management & Monitoring Platform",
+      year: "2026",
+      image: Medisphere,
     },
     {
       id: "score-tracker",

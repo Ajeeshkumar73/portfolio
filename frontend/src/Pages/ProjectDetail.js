@@ -6,6 +6,7 @@ import {
   ScoreTacker,
   WellnessWave,
   LearnLoop,
+  Medisphere,
 } from "../assets/ProjectImage";
 
 const allProjects = [
@@ -14,8 +15,10 @@ const allProjects = [
     title:
       "LEARNLOOP | AI-Powered Career Guidance & Skill Development Platform",
     year: "2026",
-    description:
-      "Developed an AI-powered Career Guidance and Skill Development Platform that helps users identify suitable career paths through personalized recommendations, skill-gap analysis, and customized learning roadmaps. The platform integrates an AI mentor chatbot, resume generation, and job description analysis using Large Language Models and Natural Language Processing techniques. It also includes community collaboration features, secure authentication, media management, and scalable backend architecture for enhanced user engagement and career planning.",
+    description: [
+      "Developed an AI-powered Career Guidance and Skill Development Platform that helps users identify suitable career paths through personalized recommendations, skill-gap analysis, and customized learning roadmaps.",
+      "The platform integrates an AI mentor chatbot, resume generation, and job description analysis using Large Language Models and Natural Language Processing techniques. It also includes community collaboration features, secure authentication, media management, and scalable backend architecture for enhanced user engagement and career planning.",
+    ],
     tech: [
       "HTML5",
       "CSS3",
@@ -40,8 +43,11 @@ const allProjects = [
     title:
       "WELLNESS WAVE | Early Lifestyle Disease Prediction and Prevention System",
     year: "2026",
-    description:
-      "Developed an AI-powered Lifestyle Disease Prediction and Healthcare Management Platform that analyzes user health data using deep learning models to predict the risk of lifestyle diseases and classify users into low, intermediate, or high-risk categories. The system provides personalized preventive healthcare recommendations, including diet plans, exercise routines, and healthy lifestyle habits for low- and intermediate-risk users, while recommending consultations with relevant medical specialists for high-risk individuals. The platform also integrates an AI chatbot for healthcare assistance, doctor appointment booking, real-time communication, appointment reminders, and health report generation to enhance preventive care and patient engagement. Built with a scalable architecture, responsive user interface, and secure data management practices.",
+    description: [
+      "Developed an AI-powered Lifestyle Disease Prediction and Healthcare Management Platform that analyzes user health data using deep learning models to predict the risk of lifestyle diseases and classify users into low, intermediate, or high-risk categories.",
+      "The system provides personalized preventive healthcare recommendations, including diet plans, exercise routines, and healthy lifestyle habits for low- and intermediate-risk users, while recommending consultations with relevant medical specialists for high-risk individuals.",
+      "The platform also integrates an AI chatbot for healthcare assistance, doctor appointment booking, real-time communication, appointment reminders, and health report generation to enhance preventive care and patient engagement. Built with a scalable architecture, responsive user interface, and secure data management practices.",
+    ],
     tech: [
       "HTML5",
       "CSS3",
@@ -63,12 +69,46 @@ const allProjects = [
     url: "https://github.com/Ajeeshkumar73/wellness_wave_main",
   },
   {
+    id: "medisphere",
+    title:
+      "MEDISPHERE | Intelligent Healthcare Management & Monitoring Platform",
+    year: "2026",
+    description: [
+      "Developed an AI-powered Healthcare Management and Monitoring Platform designed to provide a centralized environment for managing personal and family healthcare information and accessing essential healthcare services. The platform allows users to create separate health profiles for family members and securely manage medical information such as allergies, diseases, medical conditions, medications, consulting doctors, and medical records.",
+      "The system includes medical report upload and analysis, using OCR, OpenCV, and NLP to process and extract relevant information from uploaded documents. The integrated Groq API with the LLaMA model analyzes available medical information and generates understandable health summaries, important parameters, possible risk conditions, warnings, and an indicative Health Index Score.",
+      "MediSphere also integrates pharmacy and laboratory services, allowing users to search medicines, check availability and prices, explore registered pharmacies, upload prescriptions, find diagnostic tests, and book laboratory appointments. Pharmacy and laboratory administrators can manage their services, inventory, appointments, orders, prescriptions, and test-result status through dedicated modules.",
+      "The platform provides appointment and order management, medical expense tracking, healthcare service reviews, and QR-based health information sharing. Each family member can have a unique QR code that enables authorized healthcare professionals to quickly access essential health information such as allergies, medical conditions, medications, consulting doctor details, and AI-generated health summaries.",
+      "The application was developed using Django for the backend, SQLite for data management, and HTML5, Tailwind CSS, and JavaScript for the frontend. AI-assisted healthcare analysis is implemented using Groq API and LLaMA, while OCR, OpenCV, and NLP support medical document processing and information extraction. The platform also incorporates authentication, role-based access control, and member-wise data organization to provide a structured and secure healthcare management experience.",
+    ],
+    tech: [
+      "HTML5",
+      "JavaScript",
+      "Tailwind CSS",
+      "Python",
+      "Django",
+      "SQLite",
+      "GroqAPI",
+      "LLaMA",
+      "OCR",
+      "OpenCV",
+      "NLP",
+      "REST API",
+      "Git",
+      "GitHub",
+    ],
+    image: Medisphere,
+    url: "https://github.com/Ajeeshkumar73/Medisphere",
+  },
+  {
     id: "score-tracker",
     title:
       "SCORE TRACKER | Employee Productivity Monitoring and Smart Task Recommendation System",
     year: "2026",
-    description:
-      "Developed an AI-powered workforce management platform that analyzes employee performance, tracks productivity trends, and generates real-time insights to improve organizational efficiency. Implemented a smart task recommendation engine that assigns tasks based on employee skills, workload, and historical performance data, ensuring optimal resource utilization. Integrated attendance tracking, leave management, and interactive analytical dashboards with real-time communication features and optimized database operations.",
+    description: [
+      "Developed an AI-powered workforce management platform that analyzes employee performance, tracks productivity trends, and generates real-time insights to improve organizational efficiency.",
+      "Implemented a smart task recommendation engine that assigns tasks based on employee skills, workload, and historical performance data, ensuring optimal resource utilization.",
+      "Integrated attendance tracking, leave management, and interactive analytical dashboards with real-time communication features and optimized database operations.",
+    ],
     tech: [
       "Python",
       "Flask",
@@ -91,8 +131,10 @@ const allProjects = [
     id: "farmie",
     title: "FARMIE | Web-Based Agriculture Management System",
     year: "2025",
-    description:
-      "Developed a full-stack agriculture management platform featuring AI-powered plant disease detection, crop cultivation guidance, and an online marketplace for farmers to manage and sell agricultural products. Built with a responsive interface, secure backend services, and scalable software engineering practices.",
+    description: [
+      "Developed a full-stack agriculture management platform featuring AI-powered plant disease detection, crop cultivation guidance, and an online marketplace for farmers to manage and sell agricultural products.",
+      "Built with a responsive interface, secure backend services, and scalable software engineering practices.",
+    ],
     tech: [
       "Python",
       "Flask",
@@ -245,40 +287,45 @@ function ProjectDetail() {
           <h2 className="text-xs uppercase tracking-widest font-semibold text-black/40">
             About the Project
           </h2>
-          <p
-            className="text-base sm:text-lg text-black/70 leading-relaxed"
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: expanded ? "unset" : 6,
-              WebkitBoxOrient: "vertical",
-              overflow: expanded ? "visible" : "hidden",
-            }}
-          >
-            {project.description}
-          </p>
-          {project.description && project.description.length > 300 && (
-            <button
-              onClick={() => setExpanded(!expanded)}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-black/50 hover:text-black transition-colors pt-1 cursor-pointer bg-transparent border-0 p-0"
-            >
-              {expanded ? "Show Less" : "Read More"}
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className={`transition-transform duration-300 ${
-                  expanded ? "rotate-180" : "rotate-0"
-                }`}
+          <div className="space-y-4">
+            {(Array.isArray(project.description)
+              ? expanded
+                ? project.description
+                : project.description.slice(0, 1)
+              : [project.description]
+            ).map((paragraph, index) => (
+              <p
+                key={index}
+                className="text-base sm:text-lg text-black/70 leading-relaxed"
               >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </button>
-          )}
+                {paragraph}
+              </p>
+            ))}
+          </div>
+          {Array.isArray(project.description) &&
+            project.description.length > 1 && (
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-black/50 hover:text-black transition-colors pt-1 cursor-pointer bg-transparent border-0 p-0"
+              >
+                {expanded ? "Show Less" : "Read More"}
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className={`transition-transform duration-300 ${
+                    expanded ? "rotate-180" : "rotate-0"
+                  }`}
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+            )}
         </div>
 
         {/* CTA */}
